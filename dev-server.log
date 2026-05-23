@@ -1,0 +1,19 @@
+
+> adminpanel-nextjs@1.0.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.187:3000
+✓ Ready in 730ms
+Creating turbopack project {
+  dir: 'C:\\Users\\Arghya\\Next Js\\adminpanel-nextjs',
+  testMode: true
+}
+
+
+[1m[33mwarn[39m[22m - No utility classes were detected in your source files. If this is unexpected, double-check the `content` option in your Tailwind CSS configuration.
+[1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+○ Compiling / ...
+ GET / 307 in 3.9s (next.js: 3.6s, application-code: 256ms)
+ GET /login 200 in 1444ms (next.js: 1192ms, proxy.ts: 9ms, application-code: 244ms)

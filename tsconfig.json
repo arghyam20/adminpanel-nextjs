@@ -24,8 +24,20 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@/components/*": [
+        "app/components/*"
+      ],
+      "@/lib/env": [
+        "config/env"
+      ],
+      "@/lib/prisma": [
+        "config/prisma"
+      ],
+      "@/lib/*": [
+        "utils/*"
+      ],
       "@/*": [
-        "src/*"
+        "./*"
       ]
     }
   },

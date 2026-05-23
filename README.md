@@ -1,6 +1,6 @@
 # Admin Panel Next.js
 
-Modern full-stack admin panel using Next.js App Router, TypeScript, MySQL, Prisma, JWT authentication, HTTP-only cookies, Material UI, Tailwind CSS, React Hook Form, and Zod.
+Modern enterprise admin panel using Next.js App Router, TypeScript, MySQL, Prisma, JWT authentication, HTTP-only cookies, Material UI, Tailwind CSS, React Hook Form, and Zod.
 
 ## Features
 
@@ -8,7 +8,7 @@ Modern full-stack admin panel using Next.js App Router, TypeScript, MySQL, Prism
 - Login, logout, forgot password, reset password
 - Middleware-protected dashboard routes
 - Role-based permissions stored per role
-- REST APIs with validation, standard responses, soft deletes, and repository pattern
+- Versioned API boundary with validation, standard responses, soft deletes, and repository pattern
 - Prisma MySQL schema with model-wise files, relations, timestamps, soft delete fields, and seed data
 - Admin modules for roles, users, categories, FAQs, testimonials, blogs, service categories, and services
 - Material Design admin shell with sidebar, dashboard cards, responsive tables, loading skeletons, toasts, export actions, and light/dark mode
@@ -49,28 +49,28 @@ Default seed login:
 
 ## API
 
-OpenAPI JSON is available at:
+OpenAPI JSON is available from the v1 API docs route:
 
 ```text
-/api/docs
+/api/v1/docs
 ```
 
 Main endpoints:
 
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `POST /api/auth/forgot-password`
-- `POST /api/auth/reset-password`
-- `GET|POST|PUT|DELETE /api/roles`
-- `GET|POST|PUT|DELETE /api/users`
-- `GET|POST|PUT|DELETE /api/categories`
-- `GET|POST|PUT|DELETE /api/faqs`
-- `GET|POST|PUT|DELETE /api/testimonials`
-- `GET|POST|PUT|DELETE /api/blogs`
-- `GET|POST|PUT|DELETE /api/service-categories`
-- `GET|POST|PUT|DELETE /api/services`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/logout`
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+- `GET|POST|PUT|DELETE /api/v1/roles`
+- `GET|POST|PUT|DELETE /api/v1/users`
+- `GET|POST|PUT|DELETE /api/v1/categories`
+- `GET|POST|PUT|DELETE /api/v1/faqs`
+- `GET|POST|PUT|DELETE /api/v1/testimonials`
+- `GET|POST|PUT|DELETE /api/v1/blogs`
+- `GET|POST|PUT|DELETE /api/v1/service-categories`
+- `GET|POST|PUT|DELETE /api/v1/services`
 
-Updates and deletes use an `id` query parameter, for example `PUT /api/users?id=1`.
+Updates and deletes use an `id` query parameter, for example `PUT /api/v1/users?id=1`.
 
 ## Production Notes
 

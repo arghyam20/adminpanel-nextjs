@@ -1,100 +1,39 @@
-# Full Stack Admin Panel Architecture
+# Enterprise Full Stack Admin Panel Architecture
 
-This project currently runs as a full-stack Next.js application. The senior-level target architecture is a separated frontend and backend workspace so the API can be reused by web, Android, iOS, Flutter, React Native, and future services.
+This project has been restructured toward a separated enterprise architecture:
 
-## Main Goal
+- `app/` contains frontend UI routes and UI components.
+- `api/` contains backend API route scaffolding outside the frontend app.
+- `modules/` contains module-wise architecture boundaries.
+- `types/`, `utils/`, `config/`, `constants/`, `validations/`, `services/`, and `repositories/` are top-level shared application layers.
+- `prisma/` remains the database schema, migration, and seed boundary.
 
-Build a scalable enterprise-grade application with:
-
-- Frontend and backend fully separated.
-- API reusable for web and mobile clients.
-- Secure JWT authentication using HTTP-only cookies.
-- Module-wise backend architecture.
-- Frontend and backend validation separated.
-- Strong TypeScript typing.
-- Clean architecture patterns suitable for senior development teams.
-
-## Current Implementation
-
-```text
-api/
-  README.md
-  src/
-    modules/
-    routes/
-    middlewares/
-    configs/
-    utils/
-    types/
-    validations/
-    services/
-    repositories/
-    prisma/
-    swagger/
-
-shared/
-  types/
-
-docker/
-scripts/
-
-src/
-  app/
-    (auth)/
-    api/
-    dashboard/
-  components/
-  constants/
-  lib/
-  repositories/
-  services/
-  types/
-  utils/
-  validations/
-
-prisma/
-  schema/
-    models/
-    enums/
-  database.sql
-  seed.ts
-```
-
-The existing project already includes:
-
-- Enterprise folder scaffolding for the future separated API.
-- Framework-neutral shared types under `shared/types`.
-- Next.js App Router frontend and API routes.
-- Prisma repositories.
-- Shared CRUD service helpers.
-- Zod validation.
-- JWT authentication with HTTP-only cookies.
-- RBAC permissions stored per role.
-- Common API response structure.
-- MySQL schema, seed data, and soft-delete fields.
-
-The root `app/` folder from the target structure is intentionally deferred because this codebase currently uses `src/app`. Creating both `app/` and `src/app/` can confuse Next.js project resolution.
-
-## Target Workspace Structure
+## Current Project Structure
 
 ```text
 project-root/
-  app/                  # Frontend only: Next.js App Router
-  api/                  # Backend only: Express API
-  shared/               # Shared types and utilities
+  app/                    # Frontend UI only
+  api/                    # Backend API boundary
+  modules/                # Module-wise enterprise structure
   prisma/
   public/
+  types/
+  utils/
+  config/
+  middleware/
+  constants/
+  validations/
+  services/
+  repositories/
+  hooks/
+  store/
+  styles/
   docs/
   docker/
   scripts/
-  .env
-  package.json
-  tsconfig.json
 ```
 
 ## Frontend Structure
-
-Frontend folders should contain UI, browser state, client-side validation, and API client code only.
 
 ```text
 app/
@@ -103,193 +42,183 @@ app/
   users/
   roles/
   blogs/
-  components/
-    ui/
-    forms/
-    tables/
-    modals/
-    layouts/
-  hooks/
-  store/
   services/
-  middleware/
-  utils/
-  constants/
-  types/
-  validations/
-  styles/
+  testimonials/
+  faq/
+  components/
+  layout.tsx
+  page.tsx
+  providers.tsx
 ```
 
 Frontend responsibilities:
 
+- UI rendering.
+- API calling.
+- Form handling.
+- Client-side validation.
+- State management.
 - Route protection.
-- Session checking.
-- Token refresh handling.
-- User state management with Redux Toolkit or Zustand.
-- React Hook Form integration.
-- Frontend-only Zod schemas.
 
-## Backend Structure
+Frontend must not contain:
 
-Backend folders should contain API transport, business rules, persistence, backend validation, auth, logging, and API documentation.
+- Database logic.
+- Prisma logic.
+- Backend business logic.
+- JWT creation logic.
+
+## Backend API Structure
 
 ```text
 api/
-  src/
-    modules/
-    routes/
-    middlewares/
-    configs/
-    utils/
-    types/
-    validations/
+  v1/
+    auth/
+    users/
+    roles/
+    blogs/
+    faqs/
     services/
-    repositories/
-    prisma/
-    swagger/
-    server.ts
-  package.json
-  tsconfig.json
+    testimonials/
+    categories/
+    service-categories/
+    docs/
+  middlewares/
+  utils/
+  config/
+  helpers/
+  swagger/
 ```
 
-Backend responsibilities:
+The current `api/v1/**/route.ts` files are migrated out of `app/` as the backend boundary. The next production step is to wire these into a dedicated Express API package or server entrypoint.
 
-- JWT generation and verification.
-- Refresh tokens.
-- Cookie management.
-- Role-based access control.
-- Backend-only validation.
-- Centralized error handling.
-- API logging.
-- Request validation middleware.
-- Swagger/OpenAPI docs.
-
-## Module Pattern
+## Module-Wise Architecture
 
 ```text
-api/src/modules/user/
-  controller/
-    user.controller.ts
-  routes/
-    user.routes.ts
-  service/
-    user.service.ts
-  repository/
-    user.repository.ts
-  validation/
-    create-user.validation.ts
-    update-user.validation.ts
-    login.validation.ts
-  dto/
-    create-user.dto.ts
-    update-user.dto.ts
-  types/
-    user.types.ts
-  interfaces/
-    user.interface.ts
-  constants/
-    user.constants.ts
-  swagger/
-    user.swagger.ts
+modules/
+  user/
+    controller/
+    service/
+    repository/
+    route/
+    validation/
+      frontend/
+      backend/
+    dto/
+    types/
+    interfaces/
+    constants/
+    swagger/
 ```
 
-Use this same shape for roles, categories, blogs, FAQs, testimonials, service categories, and services as each module grows beyond generic CRUD.
+The same module boundary is scaffolded for:
+
+- `user`
+- `role`
+- `blog`
+- `faq`
+- `service`
+- `testimonial`
+- `category`
+- `service-category`
+
+## Validation Architecture
+
+Frontend validation:
+
+```text
+modules/<module>/validation/frontend/
+```
+
+Purpose:
+
+- UI validation.
+- Form validation.
+- Client-side error handling.
+
+Backend validation:
+
+```text
+modules/<module>/validation/backend/
+```
+
+Purpose:
+
+- API payload validation.
+- Security validation.
+- Request sanitization.
+
+Backend validation must never import frontend validation.
+
+## Type Structure
+
+```text
+types/
+  api/
+  auth/
+  common/
+  database/
+  response/
+  modules/
+```
+
+Framework-neutral contracts live here. These types must not import React, Next.js, Prisma Client, or server-only APIs.
 
 ## Request Flow
 
 ```text
-Frontend: Next.js App Router
-        |
-API Client / Services
-        |
-Backend: Express Routes
-        |
+Frontend UI
+    |
+Frontend API Service
+    |
+API v1 Route
+    |
 Controller
-        |
+    |
 Service
-        |
+    |
 Repository
-        |
+    |
 Prisma ORM
-        |
+    |
 MySQL Database
 ```
 
-## Validation Architecture
+## JWT Authentication Target
 
-Frontend validation lives in the frontend app and is optimized for forms and user feedback.
+The production authentication architecture should include:
 
-```text
-app/validations/
-  auth/
-  user/
-  role/
-  blog/
-```
+- Access token.
+- Refresh token.
+- HTTP-only cookies.
+- Secure cookies.
+- SameSite protection.
+- Token rotation.
+- Auto refresh.
+- Logout session destruction.
 
-Backend validation lives in the API package and protects the server boundary.
-
-```text
-api/src/validations/
-  auth/
-  user/
-  role/
-  common/
-```
-
-Rules:
-
-- Backend validation must never depend on frontend validation.
-- Frontend and backend may use the same schema library, but the schema files must remain separate.
-- Shared request and response types can live in `shared/types`.
-
-## Shared Types
-
-```text
-shared/
-  types/
-    api-response.types.ts
-    auth.types.ts
-    pagination.types.ts
-    common.types.ts
-```
-
-Shared types must be framework-neutral. Do not import React, Next.js, Express, Prisma Client, or browser-only APIs into shared files.
-
-## Authentication Flow
+Authentication flow:
 
 ```text
 Frontend Login
       |
-Backend API
+Backend Verifies User
       |
-JWT Access Token Generated
+Generate Access Token
+Generate Refresh Token
       |
-Stored in HTTP-only Cookie
+Store Tokens in HTTP-only Cookies
       |
-Frontend Sends Cookie Automatically
-      |
-Middleware Validates Token
-      |
-RBAC Checks Module Permission
-```
-
-Required cookie settings:
-
-```ts
-httpOnly: true
-secure: true
-sameSite: "strict"
+Frontend Receives Authenticated Session
 ```
 
 ## API Standards
 
-Use versioned endpoints:
+REST endpoints should follow versioned paths:
 
 ```text
-/api/v1/auth/login
 /api/v1/users
 /api/v1/roles
+/api/v1/blogs
 ```
 
 Success response:
@@ -297,8 +226,8 @@ Success response:
 ```json
 {
   "success": true,
-  "message": "User created successfully",
-  "data": {},
+  "message": "User fetched successfully",
+  "data": [],
   "meta": {}
 }
 ```
@@ -313,71 +242,51 @@ Error response:
 }
 ```
 
-## Permission Keys
+## Security Requirements
 
-RBAC permission keys follow the shape `resource.action`.
+The separated backend should implement:
 
-```text
-dashboard.read
-roles.create | roles.read | roles.update | roles.delete
-users.create | users.read | users.update | users.delete
-categories.create | categories.read | categories.update | categories.delete
-faqs.create | faqs.read | faqs.update | faqs.delete
-testimonials.create | testimonials.read | testimonials.update | testimonials.delete
-blogs.create | blogs.read | blogs.update | blogs.delete
-serviceCategories.create | serviceCategories.read | serviceCategories.update | serviceCategories.delete
-services.create | services.read | services.update | services.delete
-```
+- Helmet.
+- CORS.
+- Rate limiter.
+- CSRF protection.
+- SQL injection protection through Prisma and validation.
+- XSS protection.
+- Secure HTTP headers.
+- Password hashing with bcrypt.
 
-## Required Production Capabilities
+## Database Rules
 
-- Swagger documentation.
-- Audit logs.
-- Activity logs.
-- Queue system.
-- Email service.
-- File upload service.
-- Notification service.
-- Docker setup.
-- CI/CD ready.
-- Nginx ready.
+Use Prisma with MySQL.
 
-## Security Packages For Express API
+Required model conventions:
 
-```text
-helmet
-cors
-bcrypt
-jsonwebtoken
-cookie-parser
-express-rate-limit
-xss-clean
-hpp
-```
+- Proper relations.
+- Migration system.
+- Seeders.
+- Soft delete.
+- Audit fields where needed: `createdBy`, `updatedBy`.
+- Timestamps: `createdAt`, `updatedAt`, `deletedAt`.
 
-Use `bcryptjs` or native `bcrypt` consistently across the backend. Prefer native `bcrypt` for production Node.js APIs when deployment supports native dependencies.
+## Current Implementation Notes
 
-## Migration Roadmap
+Completed in this restructure:
 
-1. Create `docs/`, `shared/`, and `api/` folders without moving runtime code. Done.
-2. Move framework-neutral response, auth, pagination, and common types into `shared/types`. Started.
-3. Add Express API package under `api/` with TypeScript, Prisma, auth middleware, validation middleware, and centralized error handling.
-4. Move one backend module at a time from Next.js route handlers to `api/src/modules`.
-5. Version all backend routes under `/api/v1`.
-6. Update the Next.js frontend services to call the Express API.
-7. Split frontend and backend validation files.
-8. Add refresh tokens, token rotation, API logger, rate limiting, and audit logs.
-9. Add Docker, Nginx, PM2 or process manager, and CI/CD workflows.
-10. Keep the Next.js app focused on UI, routing, browser state, and frontend concerns.
+- Moved frontend from `src/app` to root `app`.
+- Moved UI components under `app/components`.
+- Moved backend route code out of `app/api` to `api/v1`.
+- Moved shared app layers to top-level folders.
+- Moved global styles to `styles`.
+- Moved typed config to `config`.
+- Added `modules` boundaries and frontend/backend validation folders.
+- Added root type folders for API, auth, common, database, response, and modules.
+- Removed the obsolete `src/` and `shared/` folders.
 
-## Future Scalability
+Deferred production work:
 
-This architecture must support:
-
-- Mobile apps.
-- Microservices.
-- GraphQL.
-- WebSockets.
-- Multi-tenant systems.
-- Queue workers.
-- Background jobs.
+- Dedicated Express server entrypoint.
+- Package installation for Helmet, CORS, rate limiting, CSRF, and logger middleware.
+- Refresh-token rotation persistence.
+- Audit/activity log models.
+- Queue, email, upload, and notification services.
+- Full Swagger schemas per module.
