@@ -1,0 +1,17 @@
+model Service {
+  id              Int             @id @default(autoincrement())
+  title           String
+  slug            String          @unique
+  description     String          @db.LongText
+  image           String?
+  metaTitle       String?
+  metaDescription String?         @db.Text
+  status          Status          @default(ACTIVE)
+  categoryId      Int
+  category        ServiceCategory @relation(fields: [categoryId], references: [id])
+  deletedAt       DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([categoryId, status, deletedAt])
+}

@@ -1,0 +1,17 @@
+import { buildCrudHandlers } from "@/services/crud-service";
+import { blogRepository, withSlug } from "@/repositories/modules";
+import { blogSchema } from "@/validations/modules";
+
+const handlers = buildCrudHandlers({
+  resource: "blogs",
+  repository: blogRepository,
+  schema: blogSchema,
+  include: { category: true, author: true },
+  beforeCreate: (data) => withSlug(data as { title: string; slug?: string }),
+  beforeUpdate: (data) => withSlug(data as { title?: string; slug?: string })
+});
+
+export const GET = handlers.GET;
+export const POST = handlers.POST;
+export const PUT = handlers.PUT;
+export const DELETE = handlers.DELETE;

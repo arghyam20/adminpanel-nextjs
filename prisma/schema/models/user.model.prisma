@@ -1,0 +1,19 @@
+model User {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  email               String    @unique
+  password            String
+  phone               String?
+  profileImage        String?
+  status              Status    @default(ACTIVE)
+  roleId              Int
+  role                Role      @relation(fields: [roleId], references: [id])
+  passwordResetToken  String?   @db.VarChar(255)
+  passwordResetExpiry DateTime?
+  deletedAt           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  blogs               Blog[]
+
+  @@index([roleId, status, deletedAt])
+}

@@ -1,0 +1,14 @@
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  slug        String    @unique
+  description String?   @db.Text
+  permissions Json
+  status      Status    @default(ACTIVE)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  users       User[]
+
+  @@index([status, deletedAt])
+}
