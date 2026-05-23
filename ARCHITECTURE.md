@@ -17,6 +17,27 @@ Build a scalable enterprise-grade application with:
 ## Current Implementation
 
 ```text
+api/
+  README.md
+  src/
+    modules/
+    routes/
+    middlewares/
+    configs/
+    utils/
+    types/
+    validations/
+    services/
+    repositories/
+    prisma/
+    swagger/
+
+shared/
+  types/
+
+docker/
+scripts/
+
 src/
   app/
     (auth)/
@@ -41,6 +62,8 @@ prisma/
 
 The existing project already includes:
 
+- Enterprise folder scaffolding for the future separated API.
+- Framework-neutral shared types under `shared/types`.
 - Next.js App Router frontend and API routes.
 - Prisma repositories.
 - Shared CRUD service helpers.
@@ -49,6 +72,8 @@ The existing project already includes:
 - RBAC permissions stored per role.
 - Common API response structure.
 - MySQL schema, seed data, and soft-delete fields.
+
+The root `app/` folder from the target structure is intentionally deferred because this codebase currently uses `src/app`. Creating both `app/` and `src/app/` can confuse Next.js project resolution.
 
 ## Target Workspace Structure
 
@@ -334,8 +359,8 @@ Use `bcryptjs` or native `bcrypt` consistently across the backend. Prefer native
 
 ## Migration Roadmap
 
-1. Create `docs/`, `shared/`, and `api/` folders without moving runtime code.
-2. Move framework-neutral response, auth, pagination, and common types into `shared/types`.
+1. Create `docs/`, `shared/`, and `api/` folders without moving runtime code. Done.
+2. Move framework-neutral response, auth, pagination, and common types into `shared/types`. Started.
 3. Add Express API package under `api/` with TypeScript, Prisma, auth middleware, validation middleware, and centralized error handling.
 4. Move one backend module at a time from Next.js route handlers to `api/src/modules`.
 5. Version all backend routes under `/api/v1`.
