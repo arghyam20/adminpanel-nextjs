@@ -7,9 +7,12 @@ export default function UsersPage() {
     <DataTable
       title="User Management"
       endpoint="/api/v1/users"
+      addHref="/dashboard/users/add"
+      editHref={(id) => `/dashboard/users/edit/${id}`}
       columns={[
         { key: "name", label: "Name" },
         { key: "email", label: "Email" },
+        { key: "phone", label: "Phone" },
         { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> },
       ]}
     />

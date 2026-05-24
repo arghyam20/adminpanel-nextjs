@@ -7,6 +7,8 @@ export default function BlogsPage() {
     <DataTable
       title="Blog Module"
       endpoint="/api/v1/blogs"
+      addHref="/dashboard/blogs/add"
+      editHref={(id) => `/dashboard/blogs/edit/${id}`}
       columns={[
         { key: "title", label: "Title" },
         { key: "slug", label: "Slug" },

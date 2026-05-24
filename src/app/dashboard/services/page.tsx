@@ -7,6 +7,8 @@ export default function ServicesPage() {
     <DataTable
       title="Service Module"
       endpoint="/api/v1/services"
+      addHref="/dashboard/services/add"
+      editHref={(id) => `/dashboard/services/edit/${id}`}
       columns={[
         { key: "title", label: "Title" },
         { key: "slug", label: "Slug" },

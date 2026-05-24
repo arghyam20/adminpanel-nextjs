@@ -7,6 +7,8 @@ export default function TestimonialsPage() {
     <DataTable
       title="Testimonial Module"
       endpoint="/api/v1/testimonials"
+      addHref="/dashboard/testimonials/add"
+      editHref={(id) => `/dashboard/testimonials/edit/${id}`}
       columns={[
         { key: "clientName", label: "Client" },
         { key: "designation", label: "Designation" },

@@ -7,6 +7,8 @@ export default function FaqsPage() {
     <DataTable
       title="FAQ Module"
       endpoint="/api/v1/faqs"
+      addHref="/dashboard/faqs/add"
+      editHref={(id) => `/dashboard/faqs/edit/${id}`}
       columns={[
         { key: "question", label: "Question" },
         { key: "ordering", label: "Order" },

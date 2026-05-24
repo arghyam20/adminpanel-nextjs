@@ -31,6 +31,12 @@ export function buildCrudHandlers(config: CrudConfig) {
       try {
         const forbidden = await requirePermission(request, `${config.resource}.read`);
         if (forbidden) return forbidden;
+        const id = Number(request.nextUrl.searchParams.get("id"));
+        if (id) {
+          const record = await config.repository.findById(id, config.include);
+          if (!record) return fail("Record not found", 404);
+          return ok(record, "Record fetched");
+        }
         const result = await config.repository.paginate(parseQuery(request), config.include);
         return ok(result.items, "Records fetched", result.meta as never);
       } catch (error) {

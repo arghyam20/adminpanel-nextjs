@@ -28,7 +28,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { apiService } from "@/lib/api-service";
@@ -44,9 +45,12 @@ interface Props {
   title: string;
   endpoint: string;
   columns: Column[];
+  addHref: string;
+  editHref: (id: string) => string;
 }
 
-export function DataTable({ title, endpoint, columns }: Props) {
+export function DataTable({ title, endpoint, columns, addHref, editHref }: Props) {
+  const router = useRouter();
   const [rows, setRows] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -58,20 +62,8 @@ export function DataTable({ title, endpoint, columns }: Props) {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedIds, setSelectedIds] = useState<unknown[]>([]);
 
-  const url = useMemo(() => {
-    const params = new URLSearchParams({
-      page: String(page + 1),
-      pageSize: String(pageSize),
-      search,
-      status,
-      sortBy,
-      sortOrder,
-    });
-    return `${endpoint}?${params.toString()}`;
-  }, [endpoint, page, pageSize, search, sortBy, sortOrder, status]);
-
-  useEffect(() => {
-    let active = true;
+  function fetchData() {
+    setLoading(true);
     apiService
       .list<ApiResponse<Record<string, unknown>[]>>(endpoint, {
         page: page + 1,
@@ -82,22 +74,78 @@ export function DataTable({ title, endpoint, columns }: Props) {
         sortOrder,
       })
       .then(({ data: response }) => {
-        if (!active) return;
         setRows(response.data ?? []);
         setTotal(response.meta?.total ?? 0);
         setSelectedIds([]);
       })
       .catch(() => toast.error("Unable to load records"))
-      .finally(() => active && setLoading(false));
-    return () => {
-      active = false;
-    };
-  }, [endpoint, page, pageSize, search, sortBy, sortOrder, status, url]);
+      .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endpoint, page, pageSize, search, sortBy, sortOrder, status]);
+
+  async function remove(id: unknown) {
+    if (!window.confirm("Delete this record?")) return;
+    try {
+      await apiService.remove(endpoint, String(id));
+      toast.success("Record deleted");
+      setRows((items) => items.filter((item) => item.id !== id));
+      setTotal((t) => t - 1);
+    } catch {
+      toast.error("Failed to delete record");
+    }
+  }
+
+  async function bulkRemove() {
+    if (!selectedIds.length || !window.confirm(`Delete ${selectedIds.length} selected records?`))
+      return;
+    try {
+      await Promise.all(selectedIds.map((id) => apiService.remove(endpoint, String(id))));
+      toast.success("Selected records deleted");
+      setRows((items) => items.filter((item) => !selectedIds.includes(item.id)));
+      setTotal((t) => t - selectedIds.length);
+      setSelectedIds([]);
+    } catch {
+      toast.error("Failed to delete selected records");
+    }
+  }
+
+  async function toggleStatus(row: Record<string, unknown>) {
+    const next =
+      row.status === "ACTIVE"
+        ? "INACTIVE"
+        : row.status === "PUBLISHED"
+          ? "DRAFT"
+          : row.status === "DRAFT"
+            ? "PUBLISHED"
+            : "ACTIVE";
+    try {
+      await apiService.update(endpoint, String(row.id), { status: next });
+      toast.success("Status updated");
+      setRows((items) =>
+        items.map((item) => (item.id === row.id ? { ...item, status: next } : item))
+      );
+    } catch {
+      toast.error("Failed to update status");
+    }
+  }
+
+  function toggleSort(key: string) {
+    if (sortBy === key) {
+      setSortOrder((v) => (v === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(key);
+      setSortOrder("asc");
+    }
+  }
 
   function exportFile(type: "csv" | "excel" | "pdf") {
-    const header = columns.map((column) => column.label).join(",");
+    const header = columns.map((c) => c.label).join(",");
     const body = rows
-      .map((row) => columns.map((column) => JSON.stringify(row[column.key] ?? "")).join(","))
+      .map((row) => columns.map((c) => JSON.stringify(row[c.key] ?? "")).join(","))
       .join("\n");
     const blob = new Blob([`${header}\n${body}`], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a");
@@ -105,32 +153,6 @@ export function DataTable({ title, endpoint, columns }: Props) {
     link.download = `${title.toLowerCase().replaceAll(" ", "-")}.${type === "excel" ? "xls" : type}`;
     link.click();
     toast.success(`${type.toUpperCase()} export prepared`);
-  }
-
-  async function remove(id: unknown) {
-    if (!window.confirm("Delete this record?")) return;
-    await apiService.remove(endpoint, String(id));
-    toast.success("Record deleted");
-    setRows((items) => items.filter((item) => item.id !== id));
-  }
-
-  async function bulkRemove() {
-    if (!selectedIds.length || !window.confirm(`Delete ${selectedIds.length} selected records?`))
-      return;
-    await Promise.all(selectedIds.map((id) => apiService.remove(endpoint, String(id))));
-    toast.success("Selected records deleted");
-    setRows((items) => items.filter((item) => !selectedIds.includes(item.id)));
-    setSelectedIds([]);
-  }
-
-  function toggleSort(key: string) {
-    setLoading(true);
-    if (sortBy === key) {
-      setSortOrder((value) => (value === "asc" ? "desc" : "asc"));
-    } else {
-      setSortBy(key);
-      setSortOrder("asc");
-    }
   }
 
   return (
@@ -142,10 +164,10 @@ export function DataTable({ title, endpoint, columns }: Props) {
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Server-side pagination, search, filters, sorting, exports, and bulk-ready actions
+              Server-side pagination, search, filters, sorting, and exports
             </Typography>
           </Box>
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1} alignItems="center">
             <Tooltip title="Delete selected">
               <span>
                 <IconButton color="error" disabled={!selectedIds.length} onClick={bulkRemove}>
@@ -154,33 +176,25 @@ export function DataTable({ title, endpoint, columns }: Props) {
               </span>
             </Tooltip>
             <Tooltip title="Export CSV">
-              <IconButton
-                onClick={() => {
-                  exportFile("csv");
-                }}
-              >
+              <IconButton onClick={() => exportFile("csv")}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export Excel">
-              <IconButton
-                onClick={() => {
-                  exportFile("excel");
-                }}
-              >
+              <IconButton onClick={() => exportFile("excel")}>
                 <TableViewIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export PDF">
-              <IconButton
-                onClick={() => {
-                  exportFile("pdf");
-                }}
-              >
+              <IconButton onClick={() => exportFile("pdf")}>
                 <PictureAsPdfIcon />
               </IconButton>
             </Tooltip>
-            <Button startIcon={<AddIcon />} variant="contained">
+            <Button
+              startIcon={<AddIcon />}
+              variant="contained"
+              onClick={() => router.push(addHref)}
+            >
               Add
             </Button>
           </Stack>
@@ -190,9 +204,8 @@ export function DataTable({ title, endpoint, columns }: Props) {
             size="small"
             label="Search"
             value={search}
-            onChange={(event) => {
-              setLoading(true);
-              setSearch(event.target.value);
+            onChange={(e) => {
+              setSearch(e.target.value);
               setPage(0);
             }}
           />
@@ -200,10 +213,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
             size="small"
             displayEmpty
             value={status}
-            onChange={(event) => {
-              setLoading(true);
-              setStatus(event.target.value);
-            }}
+            onChange={(e) => setStatus(e.target.value)}
           >
             <MenuItem value="">All Status</MenuItem>
             <MenuItem value="ACTIVE">Active</MenuItem>
@@ -213,6 +223,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
           </Select>
         </Stack>
       </Box>
+
       <Box sx={{ overflowX: "auto" }}>
         <Table>
           <TableHead>
@@ -221,21 +232,17 @@ export function DataTable({ title, endpoint, columns }: Props) {
                 <Checkbox
                   indeterminate={selectedIds.length > 0 && selectedIds.length < rows.length}
                   checked={rows.length > 0 && selectedIds.length === rows.length}
-                  onChange={(event) => {
-                    setSelectedIds(event.target.checked ? rows.map((row) => row.id) : []);
-                  }}
+                  onChange={(e) => setSelectedIds(e.target.checked ? rows.map((r) => r.id) : [])}
                 />
               </TableCell>
-              {columns.map((column) => (
-                <TableCell key={column.key}>
+              {columns.map((col) => (
+                <TableCell key={col.key}>
                   <TableSortLabel
-                    active={sortBy === column.key}
-                    direction={sortBy === column.key ? sortOrder : "asc"}
-                    onClick={() => {
-                      toggleSort(column.key);
-                    }}
+                    active={sortBy === col.key}
+                    direction={sortBy === col.key ? sortOrder : "asc"}
+                    onClick={() => toggleSort(col.key)}
                   >
-                    {column.label}
+                    {col.label}
                   </TableSortLabel>
                 </TableCell>
               ))}
@@ -243,61 +250,86 @@ export function DataTable({ title, endpoint, columns }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell colSpan={columns.length + 2}>
-                      <Skeleton height={32} />
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell colSpan={columns.length + 2}>
+                    <Skeleton height={32} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : rows.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + 2}
+                  align="center"
+                  sx={{ py: 6, color: "text.secondary" }}
+                >
+                  No data found
+                </TableCell>
+              </TableRow>
+            ) : (
+              rows.map((row) => (
+                <TableRow key={String(row.id)} hover>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedIds.includes(row.id)}
+                      onChange={(e) =>
+                        setSelectedIds((ids) =>
+                          e.target.checked
+                            ? [...ids, row.id]
+                            : ids.filter((id) => id !== row.id)
+                        )
+                      }
+                    />
+                  </TableCell>
+                  {columns.map((col) => (
+                    <TableCell key={col.key}>
+                      {col.render ? col.render(row) : String(row[col.key] ?? "-")}
                     </TableCell>
-                  </TableRow>
-                ))
-              : rows.map((row) => (
-                  <TableRow key={String(row.id)} hover>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedIds.includes(row.id)}
-                        onChange={(event) => {
-                          setSelectedIds((ids) =>
-                            event.target.checked
-                              ? [...ids, row.id]
-                              : ids.filter((id) => id !== row.id)
-                          );
-                        }}
+                  ))}
+                  <TableCell align="right">
+                    <Tooltip title="Toggle Status">
+                      <Chip
+                        size="small"
+                        label={String(row.status ?? "")}
+                        color={
+                          row.status === "ACTIVE" || row.status === "PUBLISHED"
+                            ? "success"
+                            : "default"
+                        }
+                        onClick={() => toggleStatus(row)}
+                        sx={{ mr: 1, cursor: "pointer" }}
                       />
-                    </TableCell>
-                    {columns.map((column) => (
-                      <TableCell key={column.key}>
-                        {column.render ? column.render(row) : String(row[column.key] ?? "-")}
-                      </TableCell>
-                    ))}
-                    <TableCell align="right">
-                      <Tooltip title="Edit">
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton color="error" onClick={() => remove(row.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <IconButton onClick={() => router.push(editHref(String(row.id)))}>
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton color="error" onClick={() => remove(row.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </Box>
+
       <TablePagination
         component="div"
         count={total}
         page={page}
-        onPageChange={(_, nextPage) => {
-          setLoading(true);
-          setPage(nextPage);
+        onPageChange={(_, p) => {
+          setPage(p);
         }}
         rowsPerPage={pageSize}
-        onRowsPerPageChange={(event) => {
-          setPageSize(Number(event.target.value));
+        onRowsPerPageChange={(e) => {
+          setPageSize(Number(e.target.value));
           setPage(0);
         }}
       />
