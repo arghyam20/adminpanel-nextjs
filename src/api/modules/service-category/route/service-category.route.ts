@@ -1,5 +1,6 @@
-﻿import type { ServiceCategoryController } from "../controller/service-category.controller";
-import { SERVICECATEGORIES_RESOURCE } from "../constants/service-category.constants";
+﻿import { SERVICECATEGORIES_RESOURCE } from "../constants/service-category.constants";
+
+import type { ServiceCategoryController } from "../controller/service-category.controller";
 
 export function createServiceCategoryRoutes(controller: ServiceCategoryController) {
   return {

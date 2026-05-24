@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
 import "../styles/globals.css";
+
 import { AppProviders } from "@/providers/app-providers";
+
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Propual Admin Panel",

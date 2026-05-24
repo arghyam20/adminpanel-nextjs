@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
+
 import { authCookieName, refreshCookieName } from "@/lib/auth";
 import { env } from "@/lib/env";
+
+import type { NextResponse } from "next/server";
 
 export function setAuthCookie(response: NextResponse, token: string) {
   response.cookies.set(authCookieName, token, {

@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 

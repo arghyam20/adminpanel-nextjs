@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
-import { NextRequest } from "next/server";
+
+
 import { fail, handleError, ok } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { resetPasswordSchema } from "@/validations/auth";
+
+import type { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {

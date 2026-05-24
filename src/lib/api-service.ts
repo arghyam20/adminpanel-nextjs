@@ -1,13 +1,13 @@
 import { httpClient } from "@/lib/http-client";
 
-export type ListParams = {
+export interface ListParams {
   page?: number;
   pageSize?: number;
   search?: string;
   status?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
-};
+}
 
 export const apiService = {
   list<T>(endpoint: string, params?: ListParams) {

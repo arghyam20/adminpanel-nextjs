@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadIcon from "@mui/icons-material/Download";
+import EditIcon from "@mui/icons-material/Edit";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import TableViewIcon from "@mui/icons-material/TableView";
 import {
   Box,
   Button,
@@ -24,26 +28,23 @@ import {
   Tooltip,
   Typography
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadIcon from "@mui/icons-material/Download";
-import EditIcon from "@mui/icons-material/Edit";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import TableViewIcon from "@mui/icons-material/TableView";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+
 import { apiService } from "@/lib/api-service";
 import type { ApiResponse } from "@/types/api";
 
-export type Column = {
+export interface Column {
   key: string;
   label: string;
   render?: (row: Record<string, unknown>) => React.ReactNode;
-};
+}
 
-type Props = {
+interface Props {
   title: string;
   endpoint: string;
   columns: Column[];
-};
+}
 
 export function DataTable({ title, endpoint, columns }: Props) {
   const [rows, setRows] = useState<Record<string, unknown>[]>([]);
@@ -150,17 +151,17 @@ export function DataTable({ title, endpoint, columns }: Props) {
               </span>
             </Tooltip>
             <Tooltip title="Export CSV">
-              <IconButton onClick={() => exportFile("csv")}>
+              <IconButton onClick={() => { exportFile("csv"); }}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export Excel">
-              <IconButton onClick={() => exportFile("excel")}>
+              <IconButton onClick={() => { exportFile("excel"); }}>
                 <TableViewIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export PDF">
-              <IconButton onClick={() => exportFile("pdf")}>
+              <IconButton onClick={() => { exportFile("pdf"); }}>
                 <PictureAsPdfIcon />
               </IconButton>
             </Tooltip>
@@ -205,7 +206,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
                 <Checkbox
                   indeterminate={selectedIds.length > 0 && selectedIds.length < rows.length}
                   checked={rows.length > 0 && selectedIds.length === rows.length}
-                  onChange={(event) => setSelectedIds(event.target.checked ? rows.map((row) => row.id) : [])}
+                  onChange={(event) => { setSelectedIds(event.target.checked ? rows.map((row) => row.id) : []); }}
                 />
               </TableCell>
               {columns.map((column) => (
@@ -213,7 +214,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
                   <TableSortLabel
                     active={sortBy === column.key}
                     direction={sortBy === column.key ? sortOrder : "asc"}
-                    onClick={() => toggleSort(column.key)}
+                    onClick={() => { toggleSort(column.key); }}
                   >
                     {column.label}
                   </TableSortLabel>
@@ -237,9 +238,9 @@ export function DataTable({ title, endpoint, columns }: Props) {
                       <Checkbox
                         checked={selectedIds.includes(row.id)}
                         onChange={(event) =>
-                          setSelectedIds((ids) =>
+                          { setSelectedIds((ids) =>
                             event.target.checked ? [...ids, row.id] : ids.filter((id) => id !== row.id)
-                          )
+                          ); }
                         }
                       />
                     </TableCell>

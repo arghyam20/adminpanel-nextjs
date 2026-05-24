@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { Box, Paper, Stack, Typography } from "@mui/material";
+import Link from "next/link";
+
 import { LoginForm } from "@/components/forms/login-form";
 
 export default function LoginPage() {

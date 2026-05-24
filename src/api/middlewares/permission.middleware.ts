@@ -1,6 +1,8 @@
-import { NextRequest } from "next/server";
+
 import { fail } from "@/lib/api-response";
 import { can, getRequestSession } from "@/lib/auth";
+
+import type { NextRequest } from "next/server";
 
 export async function requirePermission(request: NextRequest, permission: string) {
   const session = await getRequestSession(request);

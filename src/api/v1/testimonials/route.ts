@@ -1,5 +1,5 @@
-import { buildCrudHandlers } from "@/services/crud-service";
 import { testimonialRepository } from "@/repositories/modules";
+import { buildCrudHandlers } from "@/services/crud-service";
 import { testimonialSchema } from "@/validations/modules";
 
 const handlers = buildCrudHandlers({

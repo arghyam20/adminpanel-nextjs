@@ -1,5 +1,6 @@
-﻿import type { CategoryController } from "../controller/category.controller";
-import { CATEGORIES_RESOURCE } from "../constants/category.constants";
+﻿import { CATEGORIES_RESOURCE } from "../constants/category.constants";
+
+import type { CategoryController } from "../controller/category.controller";
 
 export function createCategoryRoutes(controller: CategoryController) {
   return {

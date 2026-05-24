@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+
+import { fail, handleError } from "@/lib/api-response";
 import { createAccessToken, createRefreshToken } from "@/lib/auth";
 import { setAuthCookie, setRefreshCookie } from "@/lib/cookies";
 import { prisma } from "@/lib/prisma";
-import { fail, handleError } from "@/lib/api-response";
 import { loginSchema } from "@/validations/auth";
 
 export async function POST(request: NextRequest) {

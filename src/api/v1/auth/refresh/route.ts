@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+
 import { fail, handleError } from "@/lib/api-response";
 import { createAccessToken, refreshCookieName, verifyRefreshToken } from "@/lib/auth";
 import { setAuthCookie } from "@/lib/cookies";

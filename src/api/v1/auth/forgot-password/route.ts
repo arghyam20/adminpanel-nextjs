@@ -1,8 +1,11 @@
 import crypto from "node:crypto";
-import { NextRequest } from "next/server";
+
+
 import { fail, handleError, ok } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/validations/auth";
+
+import type { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,5 +1,5 @@
-import { buildCrudHandlers } from "@/services/crud-service";
 import { categoryRepository, withSlug } from "@/repositories/modules";
+import { buildCrudHandlers } from "@/services/crud-service";
 import { categorySchema } from "@/validations/modules";
 
 const handlers = buildCrudHandlers({

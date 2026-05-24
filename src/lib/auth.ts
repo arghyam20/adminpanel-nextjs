@@ -1,20 +1,23 @@
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
-import { NextRequest } from "next/server";
+
 import { env } from "@/lib/env";
+
+import type { NextRequest } from "next/server";
+
 
 const secret = new TextEncoder().encode(env.JWT_SECRET);
 const refreshSecret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
 export const authCookieName = "admin_access_token";
 export const refreshCookieName = "admin_refresh_token";
 
-export type SessionUser = {
+export interface SessionUser {
   id: number;
   email: string;
   name: string;
   role: string;
   permissions: Record<string, string[]>;
-};
+}
 
 export async function createAccessToken(user: SessionUser) {
   return new SignJWT(user)

@@ -1,8 +1,9 @@
 "use client";
 
+import { Box, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Box, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+
 import { navigationItems } from "@/constants/navigation";
 
 export function Sidebar() {

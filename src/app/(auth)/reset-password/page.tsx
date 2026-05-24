@@ -1,9 +1,13 @@
 "use client";
 
+import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
+
+type MessageResponse = {
+  message: string;
+};
 
 export default function ResetPasswordPage() {
   const [token, setToken] = useState("");
@@ -15,8 +19,12 @@ export default function ResetPasswordPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, password })
     });
-    const json = await response.json();
-    response.ok ? toast.success(json.message) : toast.error(json.message);
+    const json = (await response.json()) as MessageResponse;
+    if (response.ok) {
+      toast.success(json.message);
+    } else {
+      toast.error(json.message);
+    }
   }
 
   return (
@@ -26,8 +34,8 @@ export default function ResetPasswordPage() {
           <Typography variant="h5" fontWeight={900}>
             Reset Password
           </Typography>
-          <TextField label="Reset Token" value={token} onChange={(event) => setToken(event.target.value)} />
-          <TextField label="New Password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+          <TextField label="Reset Token" value={token} onChange={(event) => { setToken(event.target.value); }} />
+          <TextField label="New Password" type="password" value={password} onChange={(event) => { setPassword(event.target.value); }} />
           <Button variant="contained" onClick={submit}>
             Reset Password
           </Button>

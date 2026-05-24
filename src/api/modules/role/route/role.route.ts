@@ -1,5 +1,6 @@
-﻿import type { RoleController } from "../controller/role.controller";
-import { ROLES_RESOURCE } from "../constants/role.constants";
+﻿import { ROLES_RESOURCE } from "../constants/role.constants";
+
+import type { RoleController } from "../controller/role.controller";
 
 export function createRoleRoutes(controller: RoleController) {
   return {

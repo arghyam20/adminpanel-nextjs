@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
 import { useThemeMode } from "@/providers/theme-provider";
 
 export function Topbar() {

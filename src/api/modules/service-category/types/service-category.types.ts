@@ -1,6 +1,6 @@
-﻿export type ServiceCategoryRecord = {
+﻿export interface ServiceCategoryRecord {
   id: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
-};
+}

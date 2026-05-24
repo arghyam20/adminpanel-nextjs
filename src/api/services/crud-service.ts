@@ -1,25 +1,27 @@
-import { z } from "zod";
-import { NextRequest } from "next/server";
-import { created, fail, handleError, ok } from "@/lib/api-response";
+
 import { requirePermission } from "@/api/middlewares/permission.middleware";
+import { created, fail, handleError, ok } from "@/lib/api-response";
 import { parseQuery } from "@/lib/query";
 
-type CrudRepository = {
+import type { NextRequest } from "next/server";
+import type { z } from "zod";
+
+interface CrudRepository {
   paginate(options: ReturnType<typeof parseQuery>, include?: object): Promise<{ items: unknown[]; meta: unknown }>;
   findById(id: number, include?: object): Promise<unknown | null>;
   create(data: object): Promise<unknown>;
   update(id: number, data: object): Promise<unknown>;
   softDelete(id: number): Promise<unknown>;
-};
+}
 
-export type CrudConfig = {
+export interface CrudConfig {
   resource: string;
   repository: CrudRepository;
   schema: z.AnyZodObject;
   include?: object;
   beforeCreate?: (data: object, request: NextRequest) => Promise<object> | object;
   beforeUpdate?: (data: object, request: NextRequest) => Promise<object> | object;
-};
+}
 
 export function buildCrudHandlers(config: CrudConfig) {
   return {

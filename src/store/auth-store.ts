@@ -1,12 +1,13 @@
 "use client";
 
 import { createContext, useContext } from "react";
+
 import type { AuthUser } from "@/types";
 
-export type AuthStoreState = {
+export interface AuthStoreState {
   user: AuthUser | null;
   isAuthenticated: boolean;
-};
+}
 
 export const defaultAuthStore: AuthStoreState = {
   user: null,

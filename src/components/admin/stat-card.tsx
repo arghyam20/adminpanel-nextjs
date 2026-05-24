@@ -1,4 +1,5 @@
 import { Paper, Stack, Typography } from "@mui/material";
+
 import type { SvgIconComponent } from "@mui/icons-material";
 
 export function StatCard({ label, value, icon: Icon }: { label: string; value: string; icon: SvgIconComponent }) {

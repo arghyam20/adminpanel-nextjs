@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+
 import { applySecurityHeaders } from "@/api/middlewares/security-headers.middleware";
 import { getRequestSession } from "@/lib/auth";
 

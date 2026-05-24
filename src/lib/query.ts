@@ -1,5 +1,7 @@
-import { NextRequest } from "next/server";
 import type { QueryOptions } from "@/types/api";
+
+import type { NextRequest } from "next/server";
+
 
 export function parseQuery(request: NextRequest): QueryOptions {
   const params = request.nextUrl.searchParams;

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import type { NextResponse } from "next/server";
 
 export function applySecurityHeaders(response: NextResponse) {
   response.headers.set("X-Frame-Options", "DENY");

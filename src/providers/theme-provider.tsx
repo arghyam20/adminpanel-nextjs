@@ -1,13 +1,13 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
 import { CssBaseline, ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material";
+import { createContext, useContext, useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
-type ThemeModeContextValue = {
+interface ThemeModeContextValue {
   mode: "light" | "dark";
   toggleMode: () => void;
-};
+}
 
 const ThemeModeContext = createContext<ThemeModeContextValue | null>(null);
 
@@ -45,7 +45,7 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <ThemeModeContext.Provider value={{ mode, toggleMode: () => setMode(mode === "light" ? "dark" : "light") }}>
+    <ThemeModeContext.Provider value={{ mode, toggleMode: () => { setMode(mode === "light" ? "dark" : "light"); } }}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {children}

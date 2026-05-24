@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import type { ApiMeta, ApiResponse } from "@/types/api";
 
 export function ok<T>(data: T, message = "Success", meta?: ApiMeta) {

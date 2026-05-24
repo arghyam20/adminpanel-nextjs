@@ -1,9 +1,13 @@
 "use client";
 
+import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
+
+type MessageResponse = {
+  message: string;
+};
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -14,7 +18,7 @@ export default function ForgotPasswordPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
     });
-    const json = await response.json();
+    const json = (await response.json()) as MessageResponse;
     toast.success(json.message);
   }
 
@@ -25,7 +29,7 @@ export default function ForgotPasswordPage() {
           <Typography variant="h5" fontWeight={900}>
             Forgot Password
           </Typography>
-          <TextField label="Email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <TextField label="Email" value={email} onChange={(event) => { setEmail(event.target.value); }} />
           <Button variant="contained" onClick={submit}>
             Generate Reset Token
           </Button>

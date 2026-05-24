@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+
 import { prisma } from "@/lib/prisma";
 import { makeSlug } from "@/lib/slug";
 import { BaseRepository } from "@/repositories/base-repository";

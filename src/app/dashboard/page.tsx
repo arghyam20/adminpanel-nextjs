@@ -1,8 +1,9 @@
-import { Grid, Paper, Stack, Typography } from "@mui/material";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import PeopleIcon from "@mui/icons-material/People";
 import ArticleIcon from "@mui/icons-material/Article";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import PeopleIcon from "@mui/icons-material/People";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
+
 import { StatCard } from "@/components/admin/stat-card";
 
 export default function DashboardPage() {

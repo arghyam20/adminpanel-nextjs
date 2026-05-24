@@ -1,12 +1,12 @@
 import type { QueryOptions } from "@/types/api";
 
-type Delegate = {
+interface Delegate {
   findMany(args: unknown): Promise<unknown[]>;
   count(args: unknown): Promise<number>;
   findUnique(args: unknown): Promise<unknown | null>;
   create(args: unknown): Promise<unknown>;
   update(args: unknown): Promise<unknown>;
-};
+}
 
 export class BaseRepository<TCreate extends object, TUpdate extends object> {
   constructor(
