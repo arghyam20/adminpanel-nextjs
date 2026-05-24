@@ -1,4 +1,4 @@
-import { jwtVerify, SignJWT } from "jose";
+import { jwtVerify, SignJWT, type JWTPayload } from "jose";
 import { cookies } from "next/headers";
 
 import { env } from "@/lib/env";
@@ -19,7 +19,7 @@ export interface SessionUser {
 }
 
 export async function createAccessToken(user: SessionUser) {
-  return new SignJWT(user)
+  return new SignJWT(user as unknown as JWTPayload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("2h")
@@ -27,7 +27,7 @@ export async function createAccessToken(user: SessionUser) {
 }
 
 export async function createRefreshToken(user: Pick<SessionUser, "id" | "email" | "role">) {
-  return new SignJWT(user)
+  return new SignJWT(user as unknown as JWTPayload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")

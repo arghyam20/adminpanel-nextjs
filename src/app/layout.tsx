@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { AppProviders } from "@/providers/app-providers";
 
 import type { Metadata } from "next";
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <AppProviders>{children}</AppProviders>
+        <AppRouterCacheProvider>
+          <AppProviders>{children}</AppProviders>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

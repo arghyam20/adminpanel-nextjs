@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-type MessageResponse = {
+interface MessageResponse {
   message: string;
-};
+}
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
