@@ -1,4 +1,6 @@
 enum Status {
-  ACTIVE   @map("Active")
-  INACTIVE @map("Inactive")
+  ACTIVE    @map("Active")
+  INACTIVE  @map("Inactive")
+  DRAFT     @map("Draft")
+  PUBLISHED @map("Published")
 }

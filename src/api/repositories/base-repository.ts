@@ -39,7 +39,9 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
   }
 
   findById(id: number, include?: object) {
-    return this.delegate.findUnique({ where: { id }, include });
+    return this.delegate.findUnique({ where: { id }, include }).then((record) =>
+      record && (record as any).isDeleted ? null : record
+    );
   }
 
   create(data: TCreate) {
@@ -51,11 +53,14 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
   }
 
   softDelete(id: number) {
-    return this.delegate.update({ where: { id }, data: { deletedAt: new Date() } });
+    return this.delegate.update({
+      where: { id },
+      data: { isDeleted: true, deletedAt: new Date() },
+    });
   }
 
   private buildWhere(options: QueryOptions): Record<string, unknown> {
-    const where: Record<string, unknown> = { deletedAt: null };
+    const where: Record<string, unknown> = { isDeleted: false };
 
     if (options.status) {
       where.status = options.status;

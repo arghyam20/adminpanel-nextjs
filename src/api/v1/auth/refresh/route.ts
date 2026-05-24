@@ -10,12 +10,12 @@ export async function POST(request: NextRequest) {
     const payload = await verifyRefreshToken(request.cookies.get(refreshCookieName)?.value);
     if (!payload) return fail("Invalid refresh token", 401);
 
-    const user = await prisma.user.findUnique({
-      where: { id: payload.id },
+    const user = await prisma.user.findFirst({
+      where: { id: payload.id, isDeleted: false },
       include: { role: true },
     });
 
-    if (!user || user.deletedAt || user.status !== "ACTIVE") return fail("Invalid session", 401);
+    if (!user || user.status !== "ACTIVE") return fail("Invalid session", 401);
 
     const token = await createAccessToken({
       id: user.id,

@@ -12,13 +12,12 @@ export async function POST(request: NextRequest) {
     const parsed = loginSchema.safeParse(await request.json());
     if (!parsed.success) return fail("Validation failed", 422, parsed.error.flatten());
 
-    const user = await prisma.user.findUnique({
-      where: { email: parsed.data.email },
+    const user = await prisma.user.findFirst({
+      where: { email: parsed.data.email, isDeleted: false },
       include: { role: true },
     });
 
-    if (!user || user.deletedAt || user.status !== "ACTIVE")
-      return fail("Invalid credentials", 401);
+    if (!user || user.status !== "ACTIVE") return fail("Invalid credentials", 401);
     const validPassword = await bcrypt.compare(parsed.data.password, user.password);
     if (!validPassword) return fail("Invalid credentials", 401);
 

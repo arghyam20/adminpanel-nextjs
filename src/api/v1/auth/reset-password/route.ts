@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       where: {
         passwordResetToken: parsed.data.token,
         passwordResetExpiry: { gt: new Date() },
-        deletedAt: null,
+        isDeleted: false,
       },
     });
     if (!user) return fail("Invalid or expired token", 400);

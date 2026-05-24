@@ -2,10 +2,10 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 async function test() {
   try {
-    const total = await prisma.category.count({ where: { deletedAt: null } });
+    const total = await prisma.category.count({ where: { isDeleted: false } });
     console.log("Count:", total);
     const items = await prisma.category.findMany({ 
-      where: { deletedAt: null }, 
+      where: { isDeleted: false }, 
       skip: 0, 
       take: 10, 
       orderBy: { createdAt: 'desc' } 

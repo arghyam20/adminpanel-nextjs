@@ -11,6 +11,10 @@ import {
   Button,
   Checkbox,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   MenuItem,
   Paper,
@@ -61,6 +65,10 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [selectedIds, setSelectedIds] = useState<unknown[]>([]);
+  const [deleteDialog, setDeleteDialog] = useState<{
+    ids: unknown[];
+    message: string;
+  } | null>(null);
 
   function fetchData() {
     setLoading(true);
@@ -87,49 +95,45 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endpoint, page, pageSize, search, sortBy, sortOrder, status]);
 
-  async function remove(id: unknown) {
-    if (!window.confirm("Are you sure you want to delete this record?")) return;
-    try {
-      await apiService.remove(endpoint, String(id));
-      toast.success("Record deleted");
-      setRows((items) => items.filter((item) => item.id !== id));
-      setTotal((t) => t - 1);
-    } catch {
-      toast.error("Failed to delete record");
-    }
+  function requestDelete(ids: unknown[]) {
+    if (!ids.length) return;
+    setDeleteDialog({
+      ids,
+      message:
+        ids.length === 1
+          ? "Are you sure you want to delete this record?"
+          : `Delete ${ids.length} selected records?`,
+    });
   }
 
-  async function bulkRemove() {
-    if (!selectedIds.length || !window.confirm(`Delete ${selectedIds.length} selected records?`))
-      return;
-    try {
-      await Promise.all(selectedIds.map((id) => apiService.remove(endpoint, String(id))));
-      toast.success("Selected records deleted");
-      setRows((items) => items.filter((item) => !selectedIds.includes(item.id)));
-      setTotal((t) => t - selectedIds.length);
-      setSelectedIds([]);
-    } catch {
-      toast.error("Failed to delete selected records");
-    }
-  }
+  async function performDelete() {
+    if (!deleteDialog) return;
 
-  async function toggleStatus(row: Record<string, unknown>) {
-    const next =
-      row.status === "ACTIVE"
-        ? "INACTIVE"
-        : row.status === "PUBLISHED"
-          ? "DRAFT"
-          : row.status === "DRAFT"
-            ? "PUBLISHED"
-            : "ACTIVE";
     try {
-      await apiService.update(endpoint, String(row.id), { status: next });
-      toast.success("Status updated");
-      setRows((items) =>
-        items.map((item) => (item.id === row.id ? { ...item, status: next } : item))
+      if (deleteDialog.ids.length === 1) {
+        await apiService.remove(endpoint, String(deleteDialog.ids[0]));
+      } else {
+        await Promise.all(
+          deleteDialog.ids.map((id) => apiService.remove(endpoint, String(id)))
+        );
+      }
+
+      toast.success(
+        deleteDialog.ids.length === 1 ? "Record deleted" : "Selected records deleted"
       );
+      setRows((items) => items.filter((item) => !deleteDialog.ids.includes(item.id)));
+      setTotal((t) => t - deleteDialog.ids.length);
+      if (deleteDialog.ids.length > 1) {
+        setSelectedIds([]);
+      }
     } catch {
-      toast.error("Failed to update status");
+      toast.error(
+        deleteDialog.ids.length === 1
+          ? "Failed to delete record"
+          : "Failed to delete selected records"
+      );
+    } finally {
+      setDeleteDialog(null);
     }
   }
 
@@ -170,7 +174,11 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
           <Stack direction="row" spacing={1} alignItems="center">
             <Tooltip title="Delete selected">
               <span>
-                <IconButton color="error" disabled={!selectedIds.length} onClick={bulkRemove}>
+                <IconButton
+                  color="error"
+                  disabled={!selectedIds.length}
+                  onClick={() => requestDelete(selectedIds)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </span>
@@ -289,26 +297,13 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
                     </TableCell>
                   ))}
                   <TableCell align="right">
-                    <Tooltip title="Toggle Status">
-                      <Chip
-                        size="small"
-                        label={String(row.status ?? "")}
-                        color={
-                          row.status === "ACTIVE" || row.status === "PUBLISHED"
-                            ? "success"
-                            : "default"
-                        }
-                        onClick={() => toggleStatus(row)}
-                        sx={{ mr: 1, cursor: "pointer" }}
-                      />
-                    </Tooltip>
                     <Tooltip title="Edit">
                       <IconButton onClick={() => router.push(editHref(String(row.id)) as never)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton color="error" onClick={() => remove(row.id)}>
+                      <IconButton color="error" onClick={() => requestDelete([row.id])}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
@@ -319,6 +314,19 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
           </TableBody>
         </Table>
       </Box>
+
+      <Dialog open={Boolean(deleteDialog)} onClose={() => setDeleteDialog(null)}>
+        <DialogTitle>Confirm delete</DialogTitle>
+        <DialogContent>
+          <Typography>{deleteDialog?.message}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialog(null)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={performDelete}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <TablePagination
         component="div"

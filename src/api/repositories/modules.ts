@@ -32,7 +32,8 @@ export const serviceRepository = new BaseRepository(prisma.service, [
 export const userRepository = {
   paginate: (options: Parameters<BaseRepository<object, object>["paginate"]>[0]) =>
     new BaseRepository(prisma.user, ["name", "email", "phone"]).paginate(options, { role: true }),
-  findById: (id: number) => prisma.user.findUnique({ where: { id }, include: { role: true } }),
+  findById: (id: number) =>
+    prisma.user.findFirst({ where: { id, isDeleted: false }, include: { role: true } }),
   create: async (data: Record<string, unknown>) =>
     prisma.user.create({
       data: {
@@ -50,7 +51,7 @@ export const userRepository = {
     return prisma.user.update({ where: { id }, data: updateData as never });
   },
   softDelete: (id: number) =>
-    prisma.user.update({ where: { id }, data: { deletedAt: new Date() } }),
+    prisma.user.update({ where: { id }, data: { isDeleted: true, deletedAt: new Date() } }),
 };
 
 export function withSlug<T extends { name?: string; title?: string; slug?: string }>(data: T) {

@@ -7,8 +7,9 @@ model Testimonial {
   content     String    @db.Text
   status      Status    @default(ACTIVE)
   deletedAt   DateTime?
+  isDeleted   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  @@index([status, deletedAt])
+  @@index([status, isDeleted])
 }

@@ -4,9 +4,10 @@ model Category {
   slug      String    @unique
   status    Status    @default(ACTIVE)
   deletedAt DateTime?
+  isDeleted Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   blogs     Blog[]
 
-  @@index([status, deletedAt])
+  @@index([status, isDeleted])
 }

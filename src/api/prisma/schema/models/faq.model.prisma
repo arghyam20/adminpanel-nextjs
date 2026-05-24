@@ -5,8 +5,9 @@ model Faq {
   ordering  Int       @default(0)
   status    Status    @default(ACTIVE)
   deletedAt DateTime?
+  isDeleted Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@index([ordering, status, deletedAt])
+  @@index([ordering, status, isDeleted])
 }

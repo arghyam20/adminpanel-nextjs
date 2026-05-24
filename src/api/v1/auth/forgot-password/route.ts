@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const token = crypto.randomBytes(32).toString("hex");
     await prisma.user.updateMany({
-      where: { email: parsed.data.email, deletedAt: null },
+      where: { email: parsed.data.email, isDeleted: false },
       data: {
         passwordResetToken: token,
         passwordResetExpiry: new Date(Date.now() + 1000 * 60 * 30),
