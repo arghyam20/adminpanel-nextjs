@@ -5,7 +5,7 @@ import { userSchema } from "@/validations/modules";
 const handlers = buildCrudHandlers({
   resource: "users",
   repository: userRepository,
-  schema: userSchema
+  schema: userSchema,
 });
 
 export const GET = handlers.GET;

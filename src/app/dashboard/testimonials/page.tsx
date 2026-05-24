@@ -11,7 +11,7 @@ export default function TestimonialsPage() {
         { key: "clientName", label: "Client" },
         { key: "designation", label: "Designation" },
         { key: "rating", label: "Rating" },
-        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> }
+        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> },
       ]}
     />
   );

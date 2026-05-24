@@ -10,7 +10,7 @@ export default function ServicesPage() {
       columns={[
         { key: "title", label: "Title" },
         { key: "slug", label: "Slug" },
-        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> }
+        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> },
       ]}
     />
   );

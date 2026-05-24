@@ -5,6 +5,6 @@ import type { BlogController } from "../controller/blog.controller";
 export function createBlogRoutes(controller: BlogController) {
   return {
     resource: BLOGS_RESOURCE,
-    controller
+    controller,
   };
 }

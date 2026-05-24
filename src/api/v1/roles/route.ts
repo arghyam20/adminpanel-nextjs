@@ -7,7 +7,7 @@ const handlers = buildCrudHandlers({
   repository: roleRepository,
   schema: roleSchema,
   beforeCreate: (data) => withSlug(data as { name: string; slug?: string }),
-  beforeUpdate: (data) => withSlug(data as { name?: string; slug?: string })
+  beforeUpdate: (data) => withSlug(data as { name?: string; slug?: string }),
 });
 
 export const GET = handlers.GET;

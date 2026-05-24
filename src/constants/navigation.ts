@@ -19,15 +19,30 @@ export interface NavItem {
 export const navigationItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: DashboardIcon, permission: "dashboard.read" },
   { label: "Users", href: "/dashboard/users", icon: PeopleIcon, permission: "users.read" },
-  { label: "Categories", href: "/dashboard/categories", icon: CategoryIcon, permission: "categories.read" },
+  {
+    label: "Categories",
+    href: "/dashboard/categories",
+    icon: CategoryIcon,
+    permission: "categories.read",
+  },
   { label: "FAQs", href: "/dashboard/faqs", icon: QuizIcon, permission: "faqs.read" },
-  { label: "Testimonials", href: "/dashboard/testimonials", icon: ReviewsIcon, permission: "testimonials.read" },
+  {
+    label: "Testimonials",
+    href: "/dashboard/testimonials",
+    icon: ReviewsIcon,
+    permission: "testimonials.read",
+  },
   { label: "Blogs", href: "/dashboard/blogs", icon: ArticleIcon, permission: "blogs.read" },
   {
     label: "Service Categories",
     href: "/dashboard/service-categories",
     icon: CategoryIcon,
-    permission: "serviceCategories.read"
+    permission: "serviceCategories.read",
   },
-  { label: "Services", href: "/dashboard/services", icon: MiscellaneousServicesIcon, permission: "services.read" }
+  {
+    label: "Services",
+    href: "/dashboard/services",
+    icon: MiscellaneousServicesIcon,
+    permission: "services.read",
+  },
 ];

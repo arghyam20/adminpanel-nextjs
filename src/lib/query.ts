@@ -2,7 +2,6 @@ import type { QueryOptions } from "@/types/api";
 
 import type { NextRequest } from "next/server";
 
-
 export function parseQuery(request: NextRequest): QueryOptions {
   const params = request.nextUrl.searchParams;
   const page = Math.max(Number(params.get("page") ?? 1), 1);
@@ -15,6 +14,6 @@ export function parseQuery(request: NextRequest): QueryOptions {
     search: params.get("search") ?? undefined,
     sortBy: params.get("sortBy") ?? "createdAt",
     sortOrder,
-    status: params.get("status") ?? undefined
+    status: params.get("status") ?? undefined,
   };
 }

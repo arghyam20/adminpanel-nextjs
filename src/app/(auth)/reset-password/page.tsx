@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
     const response = await fetch("/api/v1/auth/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, password })
+      body: JSON.stringify({ token, password }),
     });
     const json = (await response.json()) as MessageResponse;
     if (response.ok) {
@@ -34,8 +34,21 @@ export default function ResetPasswordPage() {
           <Typography variant="h5" fontWeight={900}>
             Reset Password
           </Typography>
-          <TextField label="Reset Token" value={token} onChange={(event) => { setToken(event.target.value); }} />
-          <TextField label="New Password" type="password" value={password} onChange={(event) => { setPassword(event.target.value); }} />
+          <TextField
+            label="Reset Token"
+            value={token}
+            onChange={(event) => {
+              setToken(event.target.value);
+            }}
+          />
+          <TextField
+            label="New Password"
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
           <Button variant="contained" onClick={submit}>
             Reset Password
           </Button>

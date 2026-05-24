@@ -11,7 +11,7 @@ export interface AuthStoreState {
 
 export const defaultAuthStore: AuthStoreState = {
   user: null,
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 export const AuthStoreContext = createContext<AuthStoreState>(defaultAuthStore);

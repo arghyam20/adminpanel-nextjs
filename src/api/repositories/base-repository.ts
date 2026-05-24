@@ -22,9 +22,9 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
         include,
         skip: (options.page - 1) * options.pageSize,
         take: options.pageSize,
-        orderBy: { [options.sortBy ?? "createdAt"]: options.sortOrder ?? "desc" }
+        orderBy: { [options.sortBy ?? "createdAt"]: options.sortOrder ?? "desc" },
       }),
-      this.delegate.count({ where })
+      this.delegate.count({ where }),
     ]);
 
     return {
@@ -33,8 +33,8 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
         page: options.page,
         pageSize: options.pageSize,
         total,
-        totalPages: Math.ceil(total / options.pageSize)
-      }
+        totalPages: Math.ceil(total / options.pageSize),
+      },
     };
   }
 
@@ -63,7 +63,7 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
 
     if (options.search && this.searchableFields.length) {
       where.OR = this.searchableFields.map((field) => ({
-        [field]: { contains: options.search }
+        [field]: { contains: options.search },
       }));
     }
 

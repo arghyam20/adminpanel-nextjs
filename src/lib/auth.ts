@@ -5,7 +5,6 @@ import { env } from "@/lib/env";
 
 import type { NextRequest } from "next/server";
 
-
 const secret = new TextEncoder().encode(env.JWT_SECRET);
 const refreshSecret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
 export const authCookieName = "admin_access_token";

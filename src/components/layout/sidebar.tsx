@@ -19,7 +19,7 @@ export function Sidebar() {
         borderColor: "divider",
         bgcolor: "background.paper",
         minHeight: "100vh",
-        display: { xs: "none", md: "block" }
+        display: { xs: "none", md: "block" },
       }}
     >
       <Box sx={{ px: 3, py: 3 }}>
@@ -40,7 +40,10 @@ export function Sidebar() {
                 <ListItemIcon sx={{ minWidth: 40 }}>
                   <Icon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 14, fontWeight: 700 }} />
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{ fontSize: 14, fontWeight: 700 }}
+                />
               </ListItemButton>
             </Link>
           );

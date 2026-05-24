@@ -12,7 +12,7 @@ const paths = [
   "/api/v1/testimonials",
   "/api/v1/blogs",
   "/api/v1/service-categories",
-  "/api/v1/services"
+  "/api/v1/services",
 ];
 
 export async function GET() {
@@ -27,10 +27,13 @@ export async function GET() {
             get: { summary: `List ${path}`, responses: { "200": { description: "OK" } } },
             post: { summary: `Create ${path}`, responses: { "201": { description: "Created" } } },
             put: { summary: `Update ${path}?id=`, responses: { "200": { description: "OK" } } },
-            delete: { summary: `Soft delete ${path}?id=`, responses: { "200": { description: "OK" } } }
-          }
+            delete: {
+              summary: `Soft delete ${path}?id=`,
+              responses: { "200": { description: "OK" } },
+            },
+          },
         ])
-      )
+      ),
     },
     "OpenAPI document"
   );

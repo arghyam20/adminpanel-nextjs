@@ -5,6 +5,6 @@ import type { ServiceCategoryController } from "../controller/service-category.c
 export function createServiceCategoryRoutes(controller: ServiceCategoryController) {
   return {
     resource: SERVICECATEGORIES_RESOURCE,
-    controller
+    controller,
   };
 }

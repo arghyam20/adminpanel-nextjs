@@ -21,5 +21,5 @@ export const apiService = {
   },
   remove<T>(endpoint: string, id: number | string) {
     return httpClient.delete<T>(endpoint, { params: { id } });
-  }
+  },
 };

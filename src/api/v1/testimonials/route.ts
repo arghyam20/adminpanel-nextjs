@@ -5,7 +5,7 @@ import { testimonialSchema } from "@/validations/modules";
 const handlers = buildCrudHandlers({
   resource: "testimonials",
   repository: testimonialRepository,
-  schema: testimonialSchema
+  schema: testimonialSchema,
 });
 
 export const GET = handlers.GET;

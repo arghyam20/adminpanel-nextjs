@@ -14,10 +14,11 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { email: parsed.data.email },
-      include: { role: true }
+      include: { role: true },
     });
 
-    if (!user || user.deletedAt || user.status !== "ACTIVE") return fail("Invalid credentials", 401);
+    if (!user || user.deletedAt || user.status !== "ACTIVE")
+      return fail("Invalid credentials", 401);
     const validPassword = await bcrypt.compare(parsed.data.password, user.password);
     if (!validPassword) return fail("Invalid credentials", 401);
 
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       email: user.email,
       name: user.name,
       role: user.role.slug,
-      permissions: user.role.permissions as Record<string, string[]>
+      permissions: user.role.permissions as Record<string, string[]>,
     };
     const token = await createAccessToken(sessionUser);
     const refreshToken = await createRefreshToken(sessionUser);
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({
       success: true,
       message: "Login successful",
-      data: { id: user.id, name: user.name, email: user.email, role: user.role.name }
+      data: { id: user.id, name: user.name, email: user.email, role: user.role.name },
     });
     setAuthCookie(response, token);
     setRefreshCookie(response, refreshToken);

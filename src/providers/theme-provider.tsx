@@ -28,24 +28,31 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
           secondary: { main: "#0f766e" },
           background: {
             default: mode === "light" ? "#f6f8fb" : "#0f172a",
-            paper: mode === "light" ? "#ffffff" : "#111827"
-          }
+            paper: mode === "light" ? "#ffffff" : "#111827",
+          },
         },
         shape: { borderRadius: 8 },
         typography: {
           fontFamily: "Inter, Arial, sans-serif",
-          button: { textTransform: "none", fontWeight: 700 }
+          button: { textTransform: "none", fontWeight: 700 },
         },
         components: {
           MuiPaper: { styleOverrides: { root: { backgroundImage: "none" } } },
-          MuiButton: { defaultProps: { disableElevation: true } }
-        }
+          MuiButton: { defaultProps: { disableElevation: true } },
+        },
       }),
     [mode]
   );
 
   return (
-    <ThemeModeContext.Provider value={{ mode, toggleMode: () => { setMode(mode === "light" ? "dark" : "light"); } }}>
+    <ThemeModeContext.Provider
+      value={{
+        mode,
+        toggleMode: () => {
+          setMode(mode === "light" ? "dark" : "light");
+        },
+      }}
+    >
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {children}

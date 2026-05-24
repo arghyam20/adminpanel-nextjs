@@ -5,6 +5,6 @@ import type { TestimonialController } from "../controller/testimonial.controller
 export function createTestimonialRoutes(controller: TestimonialController) {
   return {
     resource: TESTIMONIALS_RESOURCE,
-    controller
+    controller,
   };
 }

@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 
-
 import { fail, handleError, ok } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { resetPasswordSchema } from "@/validations/auth";
@@ -16,8 +15,8 @@ export async function POST(request: NextRequest) {
       where: {
         passwordResetToken: parsed.data.token,
         passwordResetExpiry: { gt: new Date() },
-        deletedAt: null
-      }
+        deletedAt: null,
+      },
     });
     if (!user) return fail("Invalid or expired token", 400);
 
@@ -26,8 +25,8 @@ export async function POST(request: NextRequest) {
       data: {
         password: await bcrypt.hash(parsed.data.password, 12),
         passwordResetToken: null,
-        passwordResetExpiry: null
-      }
+        passwordResetExpiry: null,
+      },
     });
 
     return ok(null, "Password reset successful");

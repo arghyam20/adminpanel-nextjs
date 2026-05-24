@@ -16,14 +16,14 @@ export function LoginForm() {
   const router = useRouter();
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "admin@example.com", password: "Admin@12345" }
+    defaultValues: { email: "admin@example.com", password: "Admin@12345" },
   });
 
   async function onSubmit(values: LoginInput) {
     const response = await fetch("/api/v1/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values)
+      body: JSON.stringify(values),
     });
     if (!response.ok) {
       toast.error("Invalid credentials");
@@ -36,7 +36,12 @@ export function LoginForm() {
   return (
     <Stack component="form" spacing={2} onSubmit={form.handleSubmit(onSubmit)}>
       <TextField label="Email" {...form.register("email")} error={!!form.formState.errors.email} />
-      <TextField label="Password" type="password" {...form.register("password")} error={!!form.formState.errors.password} />
+      <TextField
+        label="Password"
+        type="password"
+        {...form.register("password")}
+        error={!!form.formState.errors.password}
+      />
       <Button type="submit" variant="contained" size="large">
         Sign In
       </Button>

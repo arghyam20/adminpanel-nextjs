@@ -10,7 +10,7 @@ export default function FaqsPage() {
       columns={[
         { key: "question", label: "Question" },
         { key: "ordering", label: "Order" },
-        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> }
+        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> },
       ]}
     />
   );

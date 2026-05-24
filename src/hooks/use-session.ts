@@ -6,7 +6,7 @@ export function useSessionState() {
   return useMemo(
     () => ({
       isAuthenticated: false,
-      user: null
+      user: null,
     }),
     []
   );

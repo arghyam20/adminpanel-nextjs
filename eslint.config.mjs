@@ -2,6 +2,8 @@ import importPlugin from "eslint-plugin-import";
 import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 import next from "eslint-config-next";
+import prettierConfig from "eslint-config-prettier";
+import prettierPlugin from "eslint-plugin-prettier";
 
 const eslintConfig = [
   ...next,
@@ -15,8 +17,8 @@ const eslintConfig = [
       "coverage/**",
       "dist/**",
       "next-env.d.ts",
-      "src/api/prisma/schema/**"
-    ]
+      "src/api/prisma/schema/**",
+    ],
   },
   {
     files: ["**/*.{ts,tsx}"],
@@ -24,21 +26,22 @@ const eslintConfig = [
       parser: tseslint.parser,
       parserOptions: {
         project: "./tsconfig.json",
-        tsconfigRootDir: import.meta.dirname
-      }
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     plugins: {
       "@typescript-eslint": tseslint.plugin,
       import: importPlugin,
-      "unused-imports": unusedImports
+      "unused-imports": unusedImports,
+      prettier: prettierPlugin,
     },
     settings: {
       "import/resolver": {
         typescript: {
-          project: "./tsconfig.json"
+          project: "./tsconfig.json",
         },
-        node: true
-      }
+        node: true,
+      },
     },
     rules: {
       "no-console": ["error", { allow: ["warn", "error"] }],
@@ -49,21 +52,28 @@ const eslintConfig = [
       "import/order": [
         "error",
         {
-          groups: ["builtin", "external", "internal", ["parent", "sibling", "index"], "object", "type"],
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            ["parent", "sibling", "index"],
+            "object",
+            "type",
+          ],
           pathGroups: [
             {
               pattern: "@/**",
               group: "internal",
-              position: "after"
-            }
+              position: "after",
+            },
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "always",
           alphabetize: {
             order: "asc",
-            caseInsensitive: true
-          }
-        }
+            caseInsensitive: true,
+          },
+        },
       ],
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
@@ -72,15 +82,15 @@ const eslintConfig = [
           vars: "all",
           varsIgnorePattern: "^_",
           args: "after-used",
-          argsIgnorePattern: "^_"
-        }
+          argsIgnorePattern: "^_",
+        },
       ],
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
           prefer: "type-imports",
-          fixStyle: "separate-type-imports"
-        }
+          fixStyle: "separate-type-imports",
+        },
       ],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-floating-promises": "error",
@@ -98,23 +108,25 @@ const eslintConfig = [
         "error",
         {
           checksVoidReturn: {
-            attributes: false
-          }
-        }
+            attributes: false,
+          },
+        },
       ],
-      "@typescript-eslint/no-unused-vars": "off"
-    }
+      "@typescript-eslint/no-unused-vars": "off",
+      "prettier/prettier": "warn",
+    },
   },
   {
     files: ["src/api/prisma/seed.ts", "src/scripts/**/*.ts"],
     rules: {
-      "no-console": "off"
-    }
+      "no-console": "off",
+    },
   },
   {
     files: ["*.config.{js,mjs,ts}", "next.config.ts", "postcss.config.js", "tailwind.config.ts"],
-    ...tseslint.configs.disableTypeChecked
-  }
+    ...tseslint.configs.disableTypeChecked,
+  },
+  prettierConfig,
 ];
 
 export default eslintConfig;

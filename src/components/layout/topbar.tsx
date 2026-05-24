@@ -33,7 +33,7 @@ export function Topbar() {
         px: { xs: 2, md: 4 },
         position: "sticky",
         top: 0,
-        zIndex: 10
+        zIndex: 10,
       }}
     >
       <Box>
@@ -46,7 +46,9 @@ export function Topbar() {
       </Box>
       <Stack direction="row" spacing={1} alignItems="center">
         <Tooltip title="Toggle theme">
-          <IconButton onClick={toggleMode}>{mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}</IconButton>
+          <IconButton onClick={toggleMode}>
+            {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+          </IconButton>
         </Tooltip>
         <Button startIcon={<LogoutIcon />} variant="contained" onClick={logout}>
           Logout

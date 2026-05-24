@@ -13,7 +13,7 @@ async function main() {
     testimonials: ["create", "read", "update", "delete"],
     blogs: ["create", "read", "update", "delete"],
     serviceCategories: ["create", "read", "update", "delete"],
-    services: ["create", "read", "update", "delete"]
+    services: ["create", "read", "update", "delete"],
   };
 
   const defaultRoles = [
@@ -21,13 +21,13 @@ async function main() {
       name: "Super Admin",
       slug: "super-admin",
       description: "Full platform access",
-      permissions: allPermissions
+      permissions: allPermissions,
     },
     {
       name: "Admin",
       slug: "admin",
       description: "Administrative access for business operations",
-      permissions: { ...allPermissions, roles: ["read"] }
+      permissions: { ...allPermissions, roles: ["read"] },
     },
     {
       name: "Editor",
@@ -40,8 +40,8 @@ async function main() {
         testimonials: ["create", "read", "update"],
         blogs: ["create", "read", "update"],
         serviceCategories: ["read"],
-        services: ["create", "read", "update"]
-      }
+        services: ["create", "read", "update"],
+      },
     },
     {
       name: "Manager",
@@ -55,16 +55,16 @@ async function main() {
         testimonials: ["read", "update"],
         blogs: ["read", "update"],
         serviceCategories: ["read", "update"],
-        services: ["read", "update"]
-      }
-    }
+        services: ["read", "update"],
+      },
+    },
   ];
 
   for (const role of defaultRoles) {
     await prisma.role.upsert({
       where: { slug: role.slug },
       update: { permissions: role.permissions, status: Status.ACTIVE },
-      create: { ...role, status: Status.ACTIVE }
+      create: { ...role, status: Status.ACTIVE },
     });
   }
 
@@ -76,8 +76,8 @@ async function main() {
       slug: "super-admin",
       description: "Full platform access",
       permissions: allPermissions,
-      status: Status.ACTIVE
-    }
+      status: Status.ACTIVE,
+    },
   });
 
   const admin = await prisma.user.upsert({
@@ -88,20 +88,20 @@ async function main() {
       email: "admin@example.com",
       password: await bcrypt.hash("Admin@12345", 12),
       roleId: adminRole.id,
-      status: Status.ACTIVE
-    }
+      status: Status.ACTIVE,
+    },
   });
 
   const category = await prisma.category.upsert({
     where: { slug: "company-news" },
     update: {},
-    create: { name: "Company News", slug: "company-news", status: Status.ACTIVE }
+    create: { name: "Company News", slug: "company-news", status: Status.ACTIVE },
   });
 
   const serviceCategory = await prisma.serviceCategory.upsert({
     where: { slug: "consulting" },
     update: {},
-    create: { name: "Consulting", slug: "consulting", status: Status.ACTIVE }
+    create: { name: "Consulting", slug: "consulting", status: Status.ACTIVE },
   });
 
   await prisma.faq.createMany({
@@ -109,15 +109,16 @@ async function main() {
       {
         question: "How do I secure the admin panel?",
         answer: "Use HTTPS, rotate JWT secrets, enforce roles, and keep dependencies patched.",
-        ordering: 1
+        ordering: 1,
       },
       {
         question: "Can I customize permissions?",
-        answer: "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
-        ordering: 2
-      }
+        answer:
+          "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
+        ordering: 2,
+      },
     ],
-    skipDuplicates: true
+    skipDuplicates: true,
   });
 
   await prisma.blog.upsert({
@@ -132,8 +133,8 @@ async function main() {
       status: Status.PUBLISHED,
       publishedAt: new Date(),
       categoryId: category.id,
-      authorId: admin.id
-    }
+      authorId: admin.id,
+    },
   });
 
   await prisma.service.upsert({
@@ -143,8 +144,8 @@ async function main() {
       title: "Digital Strategy",
       slug: "digital-strategy",
       description: "<p>Plan and execute scalable digital programs.</p>",
-      categoryId: serviceCategory.id
-    }
+      categoryId: serviceCategory.id,
+    },
   });
 }
 

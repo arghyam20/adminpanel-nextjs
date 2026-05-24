@@ -10,7 +10,7 @@ export default function UsersPage() {
       columns={[
         { key: "name", label: "Name" },
         { key: "email", label: "Email" },
-        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> }
+        { key: "status", label: "Status", render: (row) => <StatusChip value={row.status} /> },
       ]}
     />
   );

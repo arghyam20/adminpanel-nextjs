@@ -2,5 +2,5 @@
 
 export const Swagger = {
   tag: ROLES_RESOURCE,
-  description: "Role module API documentation"
+  description: "Role module API documentation",
 };

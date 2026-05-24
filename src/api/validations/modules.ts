@@ -7,7 +7,7 @@ export const roleSchema = z.object({
   slug: z.string().optional(),
   description: z.string().optional().nullable(),
   permissions: z.record(z.array(z.string())).default({}),
-  status: statusSchema.default("ACTIVE")
+  status: statusSchema.default("ACTIVE"),
 });
 
 export const userSchema = z.object({
@@ -17,20 +17,20 @@ export const userSchema = z.object({
   phone: z.string().optional().nullable(),
   profileImage: z.string().optional().nullable(),
   roleId: z.coerce.number().int().positive(),
-  status: statusSchema.default("ACTIVE")
+  status: statusSchema.default("ACTIVE"),
 });
 
 export const categorySchema = z.object({
   name: z.string().min(2),
   slug: z.string().optional(),
-  status: statusSchema.default("ACTIVE")
+  status: statusSchema.default("ACTIVE"),
 });
 
 export const faqSchema = z.object({
   question: z.string().min(3),
   answer: z.string().min(3),
   ordering: z.coerce.number().int().default(0),
-  status: statusSchema.default("ACTIVE")
+  status: statusSchema.default("ACTIVE"),
 });
 
 export const testimonialSchema = z.object({
@@ -39,7 +39,7 @@ export const testimonialSchema = z.object({
   image: z.string().optional().nullable(),
   rating: z.coerce.number().int().min(1).max(5).default(5),
   content: z.string().min(3),
-  status: statusSchema.default("ACTIVE")
+  status: statusSchema.default("ACTIVE"),
 });
 
 export const blogSchema = z.object({
@@ -53,7 +53,7 @@ export const blogSchema = z.object({
   tags: z.array(z.string()).default([]),
   status: statusSchema.default("DRAFT"),
   categoryId: z.coerce.number().int().positive(),
-  authorId: z.coerce.number().int().positive()
+  authorId: z.coerce.number().int().positive(),
 });
 
 export const serviceCategorySchema = categorySchema;
@@ -66,5 +66,5 @@ export const serviceSchema = z.object({
   metaTitle: z.string().optional().nullable(),
   metaDescription: z.string().optional().nullable(),
   status: statusSchema.default("ACTIVE"),
-  categoryId: z.coerce.number().int().positive()
+  categoryId: z.coerce.number().int().positive(),
 });

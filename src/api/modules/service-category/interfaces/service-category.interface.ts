@@ -1,4 +1,7 @@
-﻿import type { CreateServiceCategoryDto, UpdateServiceCategoryDto } from "../dto/service-category.dto";
+﻿import type {
+  CreateServiceCategoryDto,
+  UpdateServiceCategoryDto,
+} from "../dto/service-category.dto";
 
 export interface ServiceCategoryRepositoryContract {
   create(data: CreateServiceCategoryDto): Promise<unknown>;

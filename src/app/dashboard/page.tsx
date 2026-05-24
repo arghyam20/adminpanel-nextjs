@@ -28,8 +28,9 @@ export default function DashboardPage() {
           Production Ready Structure
         </Typography>
         <Typography color="text.secondary">
-          App Router pages, REST APIs, JWT cookies, Prisma repositories, Zod validation, Material UI, Tailwind CSS,
-          soft deletes, seed data, and module screens are scaffolded for extension.
+          App Router pages, REST APIs, JWT cookies, Prisma repositories, Zod validation, Material
+          UI, Tailwind CSS, soft deletes, seed data, and module screens are scaffolded for
+          extension.
         </Typography>
       </Paper>
     </Stack>

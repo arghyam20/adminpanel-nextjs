@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
     const response = await fetch("/api/v1/auth/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email }),
     });
     const json = (await response.json()) as MessageResponse;
     toast.success(json.message);
@@ -29,7 +29,13 @@ export default function ForgotPasswordPage() {
           <Typography variant="h5" fontWeight={900}>
             Forgot Password
           </Typography>
-          <TextField label="Email" value={email} onChange={(event) => { setEmail(event.target.value); }} />
+          <TextField
+            label="Email"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+          />
           <Button variant="contained" onClick={submit}>
             Generate Reset Token
           </Button>

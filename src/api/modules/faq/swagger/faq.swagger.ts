@@ -2,5 +2,5 @@
 
 export const Swagger = {
   tag: FAQS_RESOURCE,
-  description: "Faq module API documentation"
+  description: "Faq module API documentation",
 };

@@ -1,4 +1,3 @@
-
 import { authCookieName, refreshCookieName } from "@/lib/auth";
 import { env } from "@/lib/env";
 
@@ -10,7 +9,7 @@ export function setAuthCookie(response: NextResponse, token: string) {
     secure: env.NODE_ENV === "production" || env.APP_URL.startsWith("https://"),
     sameSite: "strict",
     path: "/",
-    maxAge: 60 * 60 * 2
+    maxAge: 60 * 60 * 2,
   });
 }
 
@@ -20,7 +19,7 @@ export function setRefreshCookie(response: NextResponse, token: string) {
     secure: env.NODE_ENV === "production" || env.APP_URL.startsWith("https://"),
     sameSite: "strict",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7
+    maxAge: 60 * 60 * 24 * 7,
   });
 }
 
@@ -30,13 +29,13 @@ export function clearAuthCookie(response: NextResponse) {
     secure: env.NODE_ENV === "production" || env.APP_URL.startsWith("https://"),
     sameSite: "strict",
     path: "/",
-    maxAge: 0
+    maxAge: 0,
   });
   response.cookies.set(refreshCookieName, "", {
     httpOnly: true,
     secure: env.NODE_ENV === "production" || env.APP_URL.startsWith("https://"),
     sameSite: "strict",
     path: "/",
-    maxAge: 0
+    maxAge: 0,
   });
 }

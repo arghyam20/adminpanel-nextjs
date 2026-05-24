@@ -4,6 +4,6 @@ export const openApiBaseDocument = {
   openapi: "3.1.0",
   info: {
     title: "Admin Panel API",
-    version: apiConfig.version
-  }
+    version: apiConfig.version,
+  },
 } as const;

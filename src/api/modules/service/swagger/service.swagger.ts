@@ -2,5 +2,5 @@
 
 export const Swagger = {
   tag: SERVICES_RESOURCE,
-  description: "Service module API documentation"
+  description: "Service module API documentation",
 };

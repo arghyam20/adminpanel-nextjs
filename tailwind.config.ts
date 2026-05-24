@@ -9,15 +9,15 @@ const config: Config = {
         brand: {
           50: "#eef6ff",
           500: "#2563eb",
-          700: "#1d4ed8"
-        }
+          700: "#1d4ed8",
+        },
       },
       boxShadow: {
-        panel: "0 12px 30px rgba(15, 23, 42, 0.08)"
-      }
-    }
+        panel: "0 12px 30px rgba(15, 23, 42, 0.08)",
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;

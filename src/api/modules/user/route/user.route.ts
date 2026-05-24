@@ -5,6 +5,6 @@ import type { UserController } from "../controller/user.controller";
 export function createUserRoutes(controller: UserController) {
   return {
     resource: USERS_RESOURCE,
-    controller
+    controller,
   };
 }

@@ -2,5 +2,5 @@
 
 export const Swagger = {
   tag: TESTIMONIALS_RESOURCE,
-  description: "Testimonial module API documentation"
+  description: "Testimonial module API documentation",
 };

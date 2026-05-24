@@ -26,7 +26,7 @@ import {
   TableSortLabel,
   TextField,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -65,7 +65,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
       search,
       status,
       sortBy,
-      sortOrder
+      sortOrder,
     });
     return `${endpoint}?${params.toString()}`;
   }, [endpoint, page, pageSize, search, sortBy, sortOrder, status]);
@@ -79,7 +79,7 @@ export function DataTable({ title, endpoint, columns }: Props) {
         search,
         status,
         sortBy,
-        sortOrder
+        sortOrder,
       })
       .then(({ data: response }) => {
         if (!active) return;
@@ -96,7 +96,9 @@ export function DataTable({ title, endpoint, columns }: Props) {
 
   function exportFile(type: "csv" | "excel" | "pdf") {
     const header = columns.map((column) => column.label).join(",");
-    const body = rows.map((row) => columns.map((column) => JSON.stringify(row[column.key] ?? "")).join(",")).join("\n");
+    const body = rows
+      .map((row) => columns.map((column) => JSON.stringify(row[column.key] ?? "")).join(","))
+      .join("\n");
     const blob = new Blob([`${header}\n${body}`], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -113,7 +115,8 @@ export function DataTable({ title, endpoint, columns }: Props) {
   }
 
   async function bulkRemove() {
-    if (!selectedIds.length || !window.confirm(`Delete ${selectedIds.length} selected records?`)) return;
+    if (!selectedIds.length || !window.confirm(`Delete ${selectedIds.length} selected records?`))
+      return;
     await Promise.all(selectedIds.map((id) => apiService.remove(endpoint, String(id))));
     toast.success("Selected records deleted");
     setRows((items) => items.filter((item) => !selectedIds.includes(item.id)));
@@ -151,17 +154,29 @@ export function DataTable({ title, endpoint, columns }: Props) {
               </span>
             </Tooltip>
             <Tooltip title="Export CSV">
-              <IconButton onClick={() => { exportFile("csv"); }}>
+              <IconButton
+                onClick={() => {
+                  exportFile("csv");
+                }}
+              >
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export Excel">
-              <IconButton onClick={() => { exportFile("excel"); }}>
+              <IconButton
+                onClick={() => {
+                  exportFile("excel");
+                }}
+              >
                 <TableViewIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Export PDF">
-              <IconButton onClick={() => { exportFile("pdf"); }}>
+              <IconButton
+                onClick={() => {
+                  exportFile("pdf");
+                }}
+              >
                 <PictureAsPdfIcon />
               </IconButton>
             </Tooltip>
@@ -206,7 +221,9 @@ export function DataTable({ title, endpoint, columns }: Props) {
                 <Checkbox
                   indeterminate={selectedIds.length > 0 && selectedIds.length < rows.length}
                   checked={rows.length > 0 && selectedIds.length === rows.length}
-                  onChange={(event) => { setSelectedIds(event.target.checked ? rows.map((row) => row.id) : []); }}
+                  onChange={(event) => {
+                    setSelectedIds(event.target.checked ? rows.map((row) => row.id) : []);
+                  }}
                 />
               </TableCell>
               {columns.map((column) => (
@@ -214,7 +231,9 @@ export function DataTable({ title, endpoint, columns }: Props) {
                   <TableSortLabel
                     active={sortBy === column.key}
                     direction={sortBy === column.key ? sortOrder : "asc"}
-                    onClick={() => { toggleSort(column.key); }}
+                    onClick={() => {
+                      toggleSort(column.key);
+                    }}
                   >
                     {column.label}
                   </TableSortLabel>
@@ -237,11 +256,13 @@ export function DataTable({ title, endpoint, columns }: Props) {
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedIds.includes(row.id)}
-                        onChange={(event) =>
-                          { setSelectedIds((ids) =>
-                            event.target.checked ? [...ids, row.id] : ids.filter((id) => id !== row.id)
-                          ); }
-                        }
+                        onChange={(event) => {
+                          setSelectedIds((ids) =>
+                            event.target.checked
+                              ? [...ids, row.id]
+                              : ids.filter((id) => id !== row.id)
+                          );
+                        }}
                       />
                     </TableCell>
                     {columns.map((column) => (
@@ -286,5 +307,11 @@ export function DataTable({ title, endpoint, columns }: Props) {
 
 export function StatusChip({ value }: { value: unknown }) {
   const label = String(value ?? "UNKNOWN");
-  return <Chip size="small" label={label} color={label === "ACTIVE" || label === "PUBLISHED" ? "success" : "default"} />;
+  return (
+    <Chip
+      size="small"
+      label={label}
+      color={label === "ACTIVE" || label === "PUBLISHED" ? "success" : "default"}
+    />
+  );
 }

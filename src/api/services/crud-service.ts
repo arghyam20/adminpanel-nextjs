@@ -1,4 +1,3 @@
-
 import { requirePermission } from "@/api/middlewares/permission.middleware";
 import { created, fail, handleError, ok } from "@/lib/api-response";
 import { parseQuery } from "@/lib/query";
@@ -7,7 +6,10 @@ import type { NextRequest } from "next/server";
 import type { z } from "zod";
 
 interface CrudRepository {
-  paginate(options: ReturnType<typeof parseQuery>, include?: object): Promise<{ items: unknown[]; meta: unknown }>;
+  paginate(
+    options: ReturnType<typeof parseQuery>,
+    include?: object
+  ): Promise<{ items: unknown[]; meta: unknown }>;
   findById(id: number, include?: object): Promise<unknown | null>;
   create(data: object): Promise<unknown>;
   update(id: number, data: object): Promise<unknown>;
@@ -41,7 +43,9 @@ export function buildCrudHandlers(config: CrudConfig) {
         if (forbidden) return forbidden;
         const parsed = config.schema.safeParse(await request.json());
         if (!parsed.success) return fail("Validation failed", 422, parsed.error.flatten());
-        const data = config.beforeCreate ? await config.beforeCreate(parsed.data, request) : parsed.data;
+        const data = config.beforeCreate
+          ? await config.beforeCreate(parsed.data, request)
+          : parsed.data;
         return created(await config.repository.create(data), "Record created");
       } catch (error) {
         return handleError(error);
@@ -55,7 +59,9 @@ export function buildCrudHandlers(config: CrudConfig) {
         if (!id) return fail("Missing id", 400);
         const parsed = config.schema.partial().safeParse(await request.json());
         if (!parsed.success) return fail("Validation failed", 422, parsed.error.flatten());
-        const data = config.beforeUpdate ? await config.beforeUpdate(parsed.data, request) : parsed.data;
+        const data = config.beforeUpdate
+          ? await config.beforeUpdate(parsed.data, request)
+          : parsed.data;
         return ok(await config.repository.update(id, data), "Record updated");
       } catch (error) {
         return handleError(error);
@@ -71,6 +77,6 @@ export function buildCrudHandlers(config: CrudConfig) {
       } catch (error) {
         return handleError(error);
       }
-    }
+    },
   };
 }

@@ -10,8 +10,8 @@ export const httpClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL ?? "/api/v1",
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 httpClient.interceptors.response.use(

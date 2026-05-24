@@ -8,7 +8,7 @@ const handlers = buildCrudHandlers({
   schema: blogSchema,
   include: { category: true, author: true },
   beforeCreate: (data) => withSlug(data as { title: string; slug?: string }),
-  beforeUpdate: (data) => withSlug(data as { title?: string; slug?: string })
+  beforeUpdate: (data) => withSlug(data as { title?: string; slug?: string }),
 });
 
 export const GET = handlers.GET;

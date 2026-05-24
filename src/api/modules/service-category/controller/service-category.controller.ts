@@ -1,4 +1,7 @@
-﻿import type { CreateServiceCategoryDto, UpdateServiceCategoryDto } from "../dto/service-category.dto";
+﻿import type {
+  CreateServiceCategoryDto,
+  UpdateServiceCategoryDto,
+} from "../dto/service-category.dto";
 import type { ServiceCategoryService } from "../service/service-category.service";
 
 export class ServiceCategoryController {

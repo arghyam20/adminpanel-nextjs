@@ -8,7 +8,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url().default("http://localhost:3000/api/v1"),
   APP_URL: z.string().url().default("https://localhost:3000"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  UPLOAD_DIR: z.string().default("public/uploads")
+  UPLOAD_DIR: z.string().default("public/uploads"),
 });
 
 export const env = envSchema.parse({
@@ -19,5 +19,5 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   APP_URL: process.env.APP_URL,
   NODE_ENV: process.env.NODE_ENV,
-  UPLOAD_DIR: process.env.UPLOAD_DIR
+  UPLOAD_DIR: process.env.UPLOAD_DIR,
 });
