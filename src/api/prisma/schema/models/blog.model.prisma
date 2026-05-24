@@ -8,7 +8,7 @@ model Blog {
   metaTitle       String?
   metaDescription String?   @db.Text
   tags            Json
-  status          Status    @default(Status.ACTIVE)
+  status          Status    @default(ACTIVE)
   publishedAt     DateTime?
   categoryId      Int
   category        Category  @relation(fields: [categoryId], references: [id])

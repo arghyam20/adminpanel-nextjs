@@ -7,7 +7,7 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_APP_URL ?? "",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

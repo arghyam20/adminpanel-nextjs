@@ -3,7 +3,7 @@ model Faq {
   question  String
   answer    String    @db.Text
   ordering  Int       @default(0)
-  status    Status    @default(Status.ACTIVE)
+  status    Status    @default(ACTIVE)
   deletedAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

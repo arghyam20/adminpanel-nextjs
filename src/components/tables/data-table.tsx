@@ -88,7 +88,7 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
   }, [endpoint, page, pageSize, search, sortBy, sortOrder, status]);
 
   async function remove(id: unknown) {
-    if (!window.confirm("Delete this record?")) return;
+    if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
       await apiService.remove(endpoint, String(id));
       toast.success("Record deleted");
@@ -193,7 +193,7 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
             <Button
               startIcon={<AddIcon />}
               variant="contained"
-              onClick={() => router.push(addHref)}
+              onClick={() => router.push(addHref as never)}
             >
               Add
             </Button>
@@ -303,7 +303,7 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
                       />
                     </Tooltip>
                     <Tooltip title="Edit">
-                      <IconButton onClick={() => router.push(editHref(String(row.id)))}>
+                      <IconButton onClick={() => router.push(editHref(String(row.id)) as never)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>

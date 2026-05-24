@@ -55,6 +55,7 @@ export function RecordForm({ title, endpoint, fields, backHref, recordId }: Prop
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting },
   } = useForm<Record<string, unknown>>({
     defaultValues: buildDefaults(fields),
@@ -81,7 +82,15 @@ export function RecordForm({ title, endpoint, fields, backHref, recordId }: Prop
 
   async function onSubmit(raw: Record<string, unknown>) {
     const data = Object.fromEntries(
-      Object.entries(raw).filter(([, v]) => v !== "" && v !== null && v !== undefined)
+      Object.entries(raw)
+        .filter(([, v]) => v !== "" && v !== null && v !== undefined)
+        .map(([k, v]) => {
+          const field = fields.find((f) => f.key === k);
+          if (field?.type === "number" && typeof v === "string") {
+            return [k, Number(v)];
+          }
+          return [k, v];
+        })
     );
     try {
       if (isEdit && recordId) {
@@ -91,12 +100,27 @@ export function RecordForm({ title, endpoint, fields, backHref, recordId }: Prop
         await apiService.create(endpoint, data);
         toast.success("Record created successfully");
       }
-      router.push(backHref);
+      router.push(backHref as never);
     } catch (err) {
-      const axiosErr = err as { response?: { data?: { message?: string; errors?: unknown } } };
-      const msg = axiosErr?.response?.data?.message ?? "Failed to save record";
-      console.error("Save error:", axiosErr?.response?.data);
-      toast.error(msg);
+      const axiosErr = err as {
+        response?: {
+          data?: {
+            message?: string;
+            errors?: { fieldErrors?: Record<string, string[]> };
+          };
+        };
+      };
+      const apiData = axiosErr?.response?.data;
+      if (apiData?.errors?.fieldErrors) {
+        for (const [key, messages] of Object.entries(apiData.errors.fieldErrors)) {
+          setError(key, { type: "server", message: messages[0] });
+        }
+        toast.error("Validation failed. Please check the form.");
+      } else {
+        const msg = apiData?.message ?? "Failed to save record";
+        console.error("Save error:", apiData);
+        toast.error(msg);
+      }
     }
   }
 
@@ -105,7 +129,7 @@ export function RecordForm({ title, endpoint, fields, backHref, recordId }: Prop
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
         <Button
           startIcon={<ArrowBackIcon />}
-          onClick={() => router.push(backHref)}
+          onClick={() => router.push(backHref as never)}
           variant="outlined"
           size="small"
         >
@@ -161,7 +185,7 @@ export function RecordForm({ title, endpoint, fields, backHref, recordId }: Prop
             <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ pt: 1 }}>
               <Button
                 variant="outlined"
-                onClick={() => router.push(backHref)}
+                onClick={() => router.push(backHref as never)}
                 disabled={isSubmitting}
               >
                 Cancel

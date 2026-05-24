@@ -2,7 +2,7 @@ model ServiceCategory {
   id        Int       @id @default(autoincrement())
   name      String
   slug      String    @unique
-  status    Status    @default(Status.ACTIVE)
+  status    Status    @default(ACTIVE)
   deletedAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
