@@ -1,6 +1,4 @@
 enum Status {
-  ACTIVE
-  INACTIVE
-  DRAFT
-  PUBLISHED
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive'
 }

@@ -5,7 +5,7 @@ model User {
   password            String
   phone               String?
   profileImage        String?
-  status              Status    @default(ACTIVE)
+  status              Status    @default(Status.ACTIVE)
   roleId              Int
   role                Role      @relation(fields: [roleId], references: [id])
   passwordResetToken  String?   @db.VarChar(255)

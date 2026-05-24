@@ -6,7 +6,7 @@ model Service {
   image           String?
   metaTitle       String?
   metaDescription String?         @db.Text
-  status          Status          @default(ACTIVE)
+  status          Status          @default(Status.ACTIVE)
   categoryId      Int
   category        ServiceCategory @relation(fields: [categoryId], references: [id])
   deletedAt       DateTime?
