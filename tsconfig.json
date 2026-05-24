@@ -25,19 +25,46 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": [
-        "app/components/*"
+        "src/components/*"
+      ],
+      "@/providers/*": [
+        "src/providers/*"
       ],
       "@/lib/env": [
-        "config/env"
+        "src/config/env"
       ],
       "@/lib/prisma": [
-        "config/prisma"
+        "src/config/prisma"
       ],
       "@/lib/*": [
-        "utils/*"
+        "src/lib/*"
+      ],
+      "@/api/*": [
+        "src/api/*"
+      ],
+      "@/modules/*": [
+        "src/api/modules/*"
+      ],
+      "@/repositories/*": [
+        "src/api/repositories/*"
+      ],
+      "@/services/*": [
+        "src/api/services/*"
+      ],
+      "@/validations/*": [
+        "src/api/validations/*"
+      ],
+      "@/config/*": [
+        "src/config/*"
+      ],
+      "@/constants/*": [
+        "src/constants/*"
+      ],
+      "@/types/*": [
+        "src/types/*"
       ],
       "@/*": [
-        "./*"
+        "src/*"
       ]
     }
   },
