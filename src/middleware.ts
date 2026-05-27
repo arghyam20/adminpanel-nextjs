@@ -1,9 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { authCookieName, verifyAccessToken } from "@/lib/auth";
+import { authCookieName, can, verifyAccessToken } from "@/lib/auth";
 
 const PUBLIC_PATHS = ["/login", "/forgot-password", "/reset-password"];
 const DASHBOARD_PREFIX = "/dashboard";
+const ROUTE_PERMISSIONS: [string, string][] = [
+  ["/dashboard/roles", "roles.read"],
+  ["/dashboard/users", "users.read"],
+  ["/dashboard/categories", "categories.read"],
+  ["/dashboard/faqs", "faqs.read"],
+  ["/dashboard/testimonials", "testimonials.read"],
+  ["/dashboard/blogs", "blogs.read"],
+  ["/dashboard/service-categories", "serviceCategories.read"],
+  ["/dashboard/services", "services.read"],
+  ["/dashboard", "dashboard.read"],
+];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -19,6 +30,11 @@ export async function middleware(request: NextRequest) {
 
   if (isDashboard && !session) {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  const requiredPermission = ROUTE_PERMISSIONS.find(([route]) => pathname.startsWith(route))?.[1];
+  if (session && requiredPermission && !can(session, requiredPermission)) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   if (isPublic && session) {

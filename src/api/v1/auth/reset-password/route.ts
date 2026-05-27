@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 
 import { fail, handleError, ok } from "@/lib/api-response";
+import { hashToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { resetPasswordSchema } from "@/validations/auth";
 
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findFirst({
       where: {
-        passwordResetToken: parsed.data.token,
+        passwordResetToken: await hashToken(parsed.data.token),
         passwordResetExpiry: { gt: new Date() },
         isDeleted: false,
       },
@@ -26,6 +27,12 @@ export async function POST(request: NextRequest) {
         password: await bcrypt.hash(parsed.data.password, 12),
         passwordResetToken: null,
         passwordResetExpiry: null,
+        sessions: {
+          updateMany: {
+            where: { revokedAt: null },
+            data: { revokedAt: new Date() },
+          },
+        },
       },
     });
 

@@ -2,10 +2,11 @@ import bcrypt from "bcryptjs";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { fail, handleError } from "@/lib/api-response";
-import { createAccessToken, createRefreshToken } from "@/lib/auth";
 import { setAuthCookie, setRefreshCookie } from "@/lib/cookies";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/validations/auth";
+
+import { issueAuthSession, setNoStore, toSafeUser } from "../_utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,28 +18,20 @@ export async function POST(request: NextRequest) {
       include: { role: true },
     });
 
-    if (!user || user.status !== "ACTIVE") return fail("Invalid credentials", 401);
+    if (user?.status !== "ACTIVE") return fail("Invalid credentials", 401);
     const validPassword = await bcrypt.compare(parsed.data.password, user.password);
     if (!validPassword) return fail("Invalid credentials", 401);
 
-    const sessionUser = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role.slug,
-      permissions: user.role.permissions as Record<string, string[]>,
-    };
-    const token = await createAccessToken(sessionUser);
-    const refreshToken = await createRefreshToken(sessionUser);
+    const { accessToken, refreshToken } = await issueAuthSession(request, user);
 
     const response = NextResponse.json({
       success: true,
       message: "Login successful",
-      data: { id: user.id, name: user.name, email: user.email, role: user.role.name },
+      data: toSafeUser(user),
     });
-    setAuthCookie(response, token);
+    setAuthCookie(response, accessToken);
     setRefreshCookie(response, refreshToken);
-    return response;
+    return setNoStore(response);
   } catch (error) {
     return handleError(error);
   }

@@ -7,7 +7,7 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL ?? "",
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "/api/v1",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -22,7 +22,12 @@ httpClient.interceptors.response.use(
     }
 
     const originalRequest = error.config as RetriableRequestConfig | undefined;
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/auth/")
+    ) {
       originalRequest._retry = true;
       await httpClient.post("/auth/refresh");
       return httpClient(originalRequest);

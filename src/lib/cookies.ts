@@ -9,7 +9,7 @@ export function setAuthCookie(response: NextResponse, token: string) {
     secure: env.NODE_ENV === "production" || env.APP_URL.startsWith("https://"),
     sameSite: "strict",
     path: "/",
-    maxAge: 60 * 60 * 2,
+    maxAge: 60 * 15,
   });
 }
 

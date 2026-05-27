@@ -1,6 +1,8 @@
 import crypto from "node:crypto";
 
 import { fail, handleError, ok } from "@/lib/api-response";
+import { hashToken } from "@/lib/auth";
+import { env } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/validations/auth";
 
@@ -15,12 +17,15 @@ export async function POST(request: NextRequest) {
     await prisma.user.updateMany({
       where: { email: parsed.data.email, isDeleted: false },
       data: {
-        passwordResetToken: token,
+        passwordResetToken: await hashToken(token),
         passwordResetExpiry: new Date(Date.now() + 1000 * 60 * 30),
       },
     });
 
-    return ok({ resetToken: token }, "If the account exists, a reset token has been generated");
+    return ok(
+      env.NODE_ENV === "production" ? null : { resetToken: token },
+      "If the account exists, a password reset email will be sent"
+    );
   } catch (error) {
     return handleError(error);
   }
