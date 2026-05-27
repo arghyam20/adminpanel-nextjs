@@ -19,7 +19,10 @@ const modules = [
   serviceSwagger,
 ];
 
-const paths = modules.reduce((acc, mod) => ({ ...acc, ...mod.paths }), {} as Record<string, unknown>);
+const paths = modules.reduce(
+  (acc, mod) => ({ ...acc, ...mod.paths }),
+  {} as Record<string, unknown>
+);
 const tags = modules.map((mod) => ({ name: mod.tag }));
 
 export async function GET() {

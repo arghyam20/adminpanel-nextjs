@@ -11,6 +11,11 @@ const FIELDS = [
 
 export default function AddTestimonialPage() {
   return (
-    <RecordForm title="Testimonial" endpoint="/api/v1/testimonials" fields={FIELDS} backHref="/dashboard/testimonials" />
+    <RecordForm
+      title="Testimonial"
+      endpoint="/api/v1/testimonials"
+      fields={FIELDS}
+      backHref="/dashboard/testimonials"
+    />
   );
 }

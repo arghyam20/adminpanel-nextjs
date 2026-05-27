@@ -12,14 +12,18 @@ export class TestimonialController {
       if (id) return ok(await this.service.findById(id), "Testimonial fetched");
       const r = await this.service.paginate(parseQuery(request));
       return ok(r.items, "Testimonials fetched", r.meta as never);
-    } catch (e) { return this.handleServiceError(e); }
+    } catch (e) {
+      return this.handleServiceError(e);
+    }
   }
   async create(request: NextRequest) {
     try {
       const parsed = testimonialSchema.safeParse(await request.json());
       if (!parsed.success) return fail("Validation failed", 422, parsed.error.flatten());
       return created(await this.service.create(parsed.data), "Testimonial created");
-    } catch (e) { return handleError(e); }
+    } catch (e) {
+      return handleError(e);
+    }
   }
   async update(request: NextRequest) {
     try {
@@ -28,14 +32,18 @@ export class TestimonialController {
       const parsed = testimonialSchema.partial().safeParse(await request.json());
       if (!parsed.success) return fail("Validation failed", 422, parsed.error.flatten());
       return ok(await this.service.update(id, parsed.data), "Testimonial updated");
-    } catch (e) { return this.handleServiceError(e); }
+    } catch (e) {
+      return this.handleServiceError(e);
+    }
   }
   async remove(request: NextRequest) {
     try {
       const id = Number(request.nextUrl.searchParams.get("id"));
       if (!id) return fail("Missing id", 400);
       return ok(await this.service.softDelete(id), "Testimonial deleted");
-    } catch (e) { return this.handleServiceError(e); }
+    } catch (e) {
+      return this.handleServiceError(e);
+    }
   }
   private handleServiceError(e: unknown) {
     const err = e as { statusCode?: number; message?: string };

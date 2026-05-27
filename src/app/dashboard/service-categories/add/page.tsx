@@ -9,6 +9,11 @@ const FIELDS = [
 
 export default function AddServiceCategoryPage() {
   return (
-    <RecordForm title="Service Category" endpoint="/api/v1/service-categories" fields={FIELDS} backHref="/dashboard/service-categories" />
+    <RecordForm
+      title="Service Category"
+      endpoint="/api/v1/service-categories"
+      fields={FIELDS}
+      backHref="/dashboard/service-categories"
+    />
   );
 }

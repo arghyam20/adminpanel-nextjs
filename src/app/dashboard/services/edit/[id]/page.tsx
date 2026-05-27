@@ -13,6 +13,12 @@ const FIELDS = [
 export default function EditServicePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   return (
-    <RecordForm title="Service" endpoint="/api/v1/services" fields={FIELDS} backHref="/dashboard/services" recordId={id} />
+    <RecordForm
+      title="Service"
+      endpoint="/api/v1/services"
+      fields={FIELDS}
+      backHref="/dashboard/services"
+      recordId={id}
+    />
   );
 }

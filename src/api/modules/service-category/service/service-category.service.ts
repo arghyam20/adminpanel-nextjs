@@ -1,12 +1,17 @@
 import { makeSlug } from "@/lib/slug";
 import type { QueryOptions } from "@/types";
-import type { CreateServiceCategoryDto, UpdateServiceCategoryDto } from "../dto/service-category.dto";
+import type {
+  CreateServiceCategoryDto,
+  UpdateServiceCategoryDto,
+} from "../dto/service-category.dto";
 import type { ServiceCategoryRepositoryContract } from "../interfaces/service-category.interface";
 
 export class ServiceCategoryService {
   constructor(private readonly repository: ServiceCategoryRepositoryContract) {}
 
-  paginate(options: QueryOptions) { return this.repository.paginate(options); }
+  paginate(options: QueryOptions) {
+    return this.repository.paginate(options);
+  }
 
   async findById(id: number) {
     const record = await this.repository.findById(id);
@@ -17,13 +22,14 @@ export class ServiceCategoryService {
   async create(data: CreateServiceCategoryDto) {
     const slug = data.slug || makeSlug(data.name);
     const existing = await this.repository.findBySlug(slug);
-    if (existing) throw Object.assign(new Error("Service category already exists"), { statusCode: 409 });
+    if (existing)
+      throw Object.assign(new Error("Service category already exists"), { statusCode: 409 });
     return this.repository.create({ ...data, slug });
   }
 
   async update(id: number, data: UpdateServiceCategoryDto) {
     await this.findById(id);
-    const slug = data.name ? (data.slug || makeSlug(data.name)) : data.slug;
+    const slug = data.name ? data.slug || makeSlug(data.name) : data.slug;
     return this.repository.update(id, slug ? { ...data, slug } : data);
   }
 

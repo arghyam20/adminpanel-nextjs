@@ -12,6 +12,12 @@ const FIELDS = [
 export default function EditFaqPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   return (
-    <RecordForm title="FAQ" endpoint="/api/v1/faqs" fields={FIELDS} backHref="/dashboard/faqs" recordId={id} />
+    <RecordForm
+      title="FAQ"
+      endpoint="/api/v1/faqs"
+      fields={FIELDS}
+      backHref="/dashboard/faqs"
+      recordId={id}
+    />
   );
 }

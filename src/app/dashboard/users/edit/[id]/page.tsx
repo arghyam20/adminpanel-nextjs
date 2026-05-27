@@ -14,6 +14,12 @@ const FIELDS = [
 export default function EditUserPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   return (
-    <RecordForm title="User" endpoint="/api/v1/users" fields={FIELDS} backHref="/dashboard/users" recordId={id} />
+    <RecordForm
+      title="User"
+      endpoint="/api/v1/users"
+      fields={FIELDS}
+      backHref="/dashboard/users"
+      recordId={id}
+    />
   );
 }

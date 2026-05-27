@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { userService } from '../services/user.service';
-import { successResponse } from '../utils/api-response';
+import { NextApiRequest, NextApiResponse } from "next";
+import { userService } from "../services/user.service";
+import { successResponse } from "../utils/api-response";
 
 export const listUsers = async (req: any, res: any) => {
   const users = await userService.listUsers();

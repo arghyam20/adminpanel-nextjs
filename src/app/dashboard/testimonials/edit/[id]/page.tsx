@@ -13,6 +13,12 @@ const FIELDS = [
 export default function EditTestimonialPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   return (
-    <RecordForm title="Testimonial" endpoint="/api/v1/testimonials" fields={FIELDS} backHref="/dashboard/testimonials" recordId={id} />
+    <RecordForm
+      title="Testimonial"
+      endpoint="/api/v1/testimonials"
+      fields={FIELDS}
+      backHref="/dashboard/testimonials"
+      recordId={id}
+    />
   );
 }

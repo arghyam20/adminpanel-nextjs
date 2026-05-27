@@ -11,6 +11,12 @@ const FIELDS = [
 export default function EditServiceCategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   return (
-    <RecordForm title="Service Category" endpoint="/api/v1/service-categories" fields={FIELDS} backHref="/dashboard/service-categories" recordId={id} />
+    <RecordForm
+      title="Service Category"
+      endpoint="/api/v1/service-categories"
+      fields={FIELDS}
+      backHref="/dashboard/service-categories"
+      recordId={id}
+    />
   );
 }

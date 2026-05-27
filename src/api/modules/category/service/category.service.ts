@@ -5,7 +5,9 @@ import type { CategoryRepositoryContract } from "../interfaces/category.interfac
 
 export class CategoryService {
   constructor(private readonly repository: CategoryRepositoryContract) {}
-  paginate(options: QueryOptions) { return this.repository.paginate(options); }
+  paginate(options: QueryOptions) {
+    return this.repository.paginate(options);
+  }
   async findById(id: number) {
     const record = await this.repository.findById(id);
     if (!record) throw Object.assign(new Error("Category not found"), { statusCode: 404 });
@@ -19,7 +21,7 @@ export class CategoryService {
   }
   async update(id: number, data: UpdateCategoryDto) {
     await this.findById(id);
-    const slug = data.name ? (data.slug || makeSlug(data.name)) : data.slug;
+    const slug = data.name ? data.slug || makeSlug(data.name) : data.slug;
     return this.repository.update(id, slug ? { ...data, slug } : data);
   }
   async softDelete(id: number) {

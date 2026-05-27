@@ -15,7 +15,12 @@ export const userSwagger = {
           { name: "pageSize", in: "query", schema: { type: "integer", default: 10 } },
           { name: "search", in: "query", schema: { type: "string" } },
           { name: "status", in: "query", schema: { type: "string", enum: ["ACTIVE", "INACTIVE"] } },
-          { name: "id", in: "query", description: "Fetch single user by id", schema: { type: "integer" } },
+          {
+            name: "id",
+            in: "query",
+            description: "Fetch single user by id",
+            schema: { type: "integer" },
+          },
         ],
         responses: {
           200: { description: "Users list" },
@@ -55,7 +60,10 @@ export const userSwagger = {
         tags: [tag],
         summary: "Update user",
         parameters: [{ name: "id", in: "query", required: true, schema: { type: "integer" } }],
-        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        requestBody: {
+          required: true,
+          content: { "application/json": { schema: { type: "object" } } },
+        },
         responses: { 200: { description: "User updated" }, 404: { description: "Not found" } },
       },
       delete: {

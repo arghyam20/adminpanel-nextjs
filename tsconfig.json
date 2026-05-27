@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2022"
-    ],
+    "lib": ["dom", "dom.iterable", "es2022"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -24,48 +20,20 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/providers/*": [
-        "src/providers/*"
-      ],
-      "@/lib/env": [
-        "src/config/env"
-      ],
-      "@/lib/prisma": [
-        "src/config/prisma"
-      ],
-      "@/lib/*": [
-        "src/lib/*"
-      ],
-      "@/api/*": [
-        "src/api/*"
-      ],
-      "@/modules/*": [
-        "src/api/modules/*"
-      ],
-      "@/repositories/*": [
-        "src/api/repositories/*"
-      ],
-      "@/services/*": [
-        "src/api/services/*"
-      ],
-      "@/validations/*": [
-        "src/api/validations/*"
-      ],
-      "@/config/*": [
-        "src/config/*"
-      ],
-      "@/constants/*": [
-        "src/constants/*"
-      ],
-      "@/types/*": [
-        "src/types/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
+      "@/components/*": ["src/components/*"],
+      "@/providers/*": ["src/providers/*"],
+      "@/lib/env": ["src/config/env"],
+      "@/lib/prisma": ["src/config/prisma"],
+      "@/lib/*": ["src/lib/*"],
+      "@/api/*": ["src/api/*"],
+      "@/modules/*": ["src/api/modules/*"],
+      "@/repositories/*": ["src/api/repositories/*"],
+      "@/services/*": ["src/api/services/*"],
+      "@/validations/*": ["src/api/validations/*"],
+      "@/config/*": ["src/config/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/types/*": ["src/types/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": [

@@ -20,6 +20,7 @@ npx ts-node-dev --respawn --transpile-only src/api/server.ts
 ```
 
 Notes
+
 - The API follows Controller → Service → Repository layers.
 - Prisma client is exposed at `src/api/prisma/client.ts`.
 - Swagger UI is available at `http://localhost:4000/api/docs` when running the server.

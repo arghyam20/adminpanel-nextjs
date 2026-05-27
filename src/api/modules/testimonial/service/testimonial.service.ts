@@ -5,7 +5,9 @@ import type { TestimonialRepositoryContract } from "../interfaces/testimonial.in
 export class TestimonialService {
   constructor(private readonly repository: TestimonialRepositoryContract) {}
 
-  paginate(options: QueryOptions) { return this.repository.paginate(options); }
+  paginate(options: QueryOptions) {
+    return this.repository.paginate(options);
+  }
 
   async findById(id: number) {
     const record = await this.repository.findById(id);
@@ -13,7 +15,9 @@ export class TestimonialService {
     return record;
   }
 
-  create(data: CreateTestimonialDto) { return this.repository.create(data); }
+  create(data: CreateTestimonialDto) {
+    return this.repository.create(data);
+  }
 
   async update(id: number, data: UpdateTestimonialDto) {
     await this.findById(id);

@@ -39,9 +39,9 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
   }
 
   findById(id: number, include?: object) {
-    return this.delegate.findUnique({ where: { id }, include }).then((record) =>
-      record && (record as any).isDeleted ? null : record
-    );
+    return this.delegate
+      .findUnique({ where: { id }, include })
+      .then((record) => (record && (record as any).isDeleted ? null : record));
   }
 
   create(data: TCreate) {

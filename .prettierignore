@@ -4,6 +4,7 @@ dist
 build
 coverage
 out
+out.json
 public
 .env
 .env.local

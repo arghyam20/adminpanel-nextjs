@@ -15,9 +15,18 @@ export const faqSwagger = {
           { name: "pageSize", in: "query", schema: { type: "integer", default: 10 } },
           { name: "search", in: "query", schema: { type: "string" } },
           { name: "status", in: "query", schema: { type: "string", enum: ["ACTIVE", "INACTIVE"] } },
-          { name: "id", in: "query", description: "Fetch single FAQ by id", schema: { type: "integer" } },
+          {
+            name: "id",
+            in: "query",
+            description: "Fetch single FAQ by id",
+            schema: { type: "integer" },
+          },
         ],
-        responses: { 200: { description: "FAQs list" }, 401: { description: "Unauthorized" }, 403: { description: "Forbidden" } },
+        responses: {
+          200: { description: "FAQs list" },
+          401: { description: "Unauthorized" },
+          403: { description: "Forbidden" },
+        },
       },
       post: {
         tags: [tag],
@@ -39,13 +48,19 @@ export const faqSwagger = {
             },
           },
         },
-        responses: { 201: { description: "FAQ created" }, 422: { description: "Validation error" } },
+        responses: {
+          201: { description: "FAQ created" },
+          422: { description: "Validation error" },
+        },
       },
       put: {
         tags: [tag],
         summary: "Update FAQ",
         parameters: [{ name: "id", in: "query", required: true, schema: { type: "integer" } }],
-        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        requestBody: {
+          required: true,
+          content: { "application/json": { schema: { type: "object" } } },
+        },
         responses: { 200: { description: "FAQ updated" }, 404: { description: "Not found" } },
       },
       delete: {

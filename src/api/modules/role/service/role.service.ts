@@ -27,7 +27,7 @@ export class RoleService {
 
   async update(id: number, data: UpdateRoleDto) {
     await this.findById(id); // 404 guard
-    const slug = data.name ? (data.slug || makeSlug(data.name)) : data.slug;
+    const slug = data.name ? data.slug || makeSlug(data.name) : data.slug;
     return this.repository.update(id, slug ? { ...data, slug } : data);
   }
 

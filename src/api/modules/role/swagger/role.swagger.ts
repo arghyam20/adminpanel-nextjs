@@ -15,7 +15,12 @@ export const roleSwagger = {
           { name: "pageSize", in: "query", schema: { type: "integer", default: 10 } },
           { name: "search", in: "query", schema: { type: "string" } },
           { name: "status", in: "query", schema: { type: "string", enum: ["ACTIVE", "INACTIVE"] } },
-          { name: "id", in: "query", description: "Fetch single role by id", schema: { type: "integer" } },
+          {
+            name: "id",
+            in: "query",
+            description: "Fetch single role by id",
+            schema: { type: "integer" },
+          },
         ],
         responses: {
           200: { description: "Roles list" },
@@ -37,7 +42,10 @@ export const roleSwagger = {
                   name: { type: "string", minLength: 2, maxLength: 100 },
                   slug: { type: "string" },
                   description: { type: "string" },
-                  permissions: { type: "object", additionalProperties: { type: "array", items: { type: "string" } } },
+                  permissions: {
+                    type: "object",
+                    additionalProperties: { type: "array", items: { type: "string" } },
+                  },
                   status: { type: "string", enum: ["ACTIVE", "INACTIVE"] },
                 },
               },

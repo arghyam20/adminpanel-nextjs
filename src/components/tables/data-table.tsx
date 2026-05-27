@@ -113,14 +113,10 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
       if (deleteDialog.ids.length === 1) {
         await apiService.remove(endpoint, String(deleteDialog.ids[0]));
       } else {
-        await Promise.all(
-          deleteDialog.ids.map((id) => apiService.remove(endpoint, String(id)))
-        );
+        await Promise.all(deleteDialog.ids.map((id) => apiService.remove(endpoint, String(id))));
       }
 
-      toast.success(
-        deleteDialog.ids.length === 1 ? "Record deleted" : "Selected records deleted"
-      );
+      toast.success(deleteDialog.ids.length === 1 ? "Record deleted" : "Selected records deleted");
       setRows((items) => items.filter((item) => !deleteDialog.ids.includes(item.id)));
       setTotal((t) => t - deleteDialog.ids.length);
       if (deleteDialog.ids.length > 1) {
@@ -284,9 +280,7 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
                       checked={selectedIds.includes(row.id)}
                       onChange={(e) =>
                         setSelectedIds((ids) =>
-                          e.target.checked
-                            ? [...ids, row.id]
-                            : ids.filter((id) => id !== row.id)
+                          e.target.checked ? [...ids, row.id] : ids.filter((id) => id !== row.id)
                         )
                       }
                     />

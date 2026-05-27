@@ -6,14 +6,26 @@ import type { UserRepositoryContract } from "../interfaces/user.interface";
 
 const INCLUDE = { role: { select: { id: true, name: true, slug: true } } } as const;
 const SELECT_SAFE = {
-  id: true, name: true, email: true, phone: true, profileImage: true,
-  status: true, roleId: true, isDeleted: true, createdAt: true, updatedAt: true,
+  id: true,
+  name: true,
+  email: true,
+  phone: true,
+  profileImage: true,
+  status: true,
+  roleId: true,
+  isDeleted: true,
+  createdAt: true,
+  updatedAt: true,
   role: { select: { id: true, name: true, slug: true } },
 } as const;
 
 export class UserRepository implements UserRepositoryContract {
-  private get model() { return prisma.user; }
-  private get baseWhere() { return { isDeleted: false }; }
+  private get model() {
+    return prisma.user;
+  }
+  private get baseWhere() {
+    return { isDeleted: false };
+  }
 
   private buildSearch(search?: string) {
     if (!search) return {};
@@ -28,14 +40,23 @@ export class UserRepository implements UserRepositoryContract {
     };
     const [items, total] = await Promise.all([
       this.model.findMany({
-        where, select: SELECT_SAFE,
+        where,
+        select: SELECT_SAFE,
         skip: (options.page - 1) * options.pageSize,
         take: options.pageSize,
         orderBy: { [options.sortBy ?? "createdAt"]: options.sortOrder ?? "desc" },
       }),
       this.model.count({ where }),
     ]);
-    return { items: items as never, meta: { page: options.page, pageSize: options.pageSize, total, totalPages: Math.ceil(total / options.pageSize) } };
+    return {
+      items: items as never,
+      meta: {
+        page: options.page,
+        pageSize: options.pageSize,
+        total,
+        totalPages: Math.ceil(total / options.pageSize),
+      },
+    };
   }
 
   async findById(id: number) {
@@ -43,7 +64,10 @@ export class UserRepository implements UserRepositoryContract {
   }
 
   async findByEmail(email: string) {
-    return this.model.findFirst({ where: { email, ...this.baseWhere }, select: SELECT_SAFE }) as never;
+    return this.model.findFirst({
+      where: { email, ...this.baseWhere },
+      select: SELECT_SAFE,
+    }) as never;
   }
 
   async create(data: CreateUserDto) {
@@ -55,6 +79,10 @@ export class UserRepository implements UserRepositoryContract {
   }
 
   async softDelete(id: number) {
-    return this.model.update({ where: { id }, data: { isDeleted: true }, include: INCLUDE }) as never;
+    return this.model.update({
+      where: { id },
+      data: { isDeleted: true },
+      include: INCLUDE,
+    }) as never;
   }
 }

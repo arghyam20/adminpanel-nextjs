@@ -1,5 +1,8 @@
 import type { QueryOptions } from "@/types";
-import type { CreateServiceCategoryDto, UpdateServiceCategoryDto } from "../dto/service-category.dto";
+import type {
+  CreateServiceCategoryDto,
+  UpdateServiceCategoryDto,
+} from "../dto/service-category.dto";
 import type { ServiceCategoryRecord } from "../types/service-category.types";
 
 export interface PaginatedResult<T> {

@@ -109,7 +109,8 @@ async function main() {
       },
       {
         question: "Can I customize permissions?",
-        answer: "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
+        answer:
+          "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
         ordering: 2,
         status: Status.ACTIVE,
       },

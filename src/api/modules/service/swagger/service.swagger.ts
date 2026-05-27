@@ -15,9 +15,18 @@ export const serviceSwagger = {
           { name: "pageSize", in: "query", schema: { type: "integer", default: 10 } },
           { name: "search", in: "query", schema: { type: "string" } },
           { name: "status", in: "query", schema: { type: "string", enum: ["ACTIVE", "INACTIVE"] } },
-          { name: "id", in: "query", description: "Fetch single service by id", schema: { type: "integer" } },
+          {
+            name: "id",
+            in: "query",
+            description: "Fetch single service by id",
+            schema: { type: "integer" },
+          },
         ],
-        responses: { 200: { description: "Services list" }, 401: { description: "Unauthorized" }, 403: { description: "Forbidden" } },
+        responses: {
+          200: { description: "Services list" },
+          401: { description: "Unauthorized" },
+          403: { description: "Forbidden" },
+        },
       },
       post: {
         tags: [tag],
@@ -45,13 +54,20 @@ export const serviceSwagger = {
             },
           },
         },
-        responses: { 201: { description: "Service created" }, 409: { description: "Slug already exists" }, 422: { description: "Validation error" } },
+        responses: {
+          201: { description: "Service created" },
+          409: { description: "Slug already exists" },
+          422: { description: "Validation error" },
+        },
       },
       put: {
         tags: [tag],
         summary: "Update service",
         parameters: [{ name: "id", in: "query", required: true, schema: { type: "integer" } }],
-        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        requestBody: {
+          required: true,
+          content: { "application/json": { schema: { type: "object" } } },
+        },
         responses: { 200: { description: "Service updated" }, 404: { description: "Not found" } },
       },
       delete: {

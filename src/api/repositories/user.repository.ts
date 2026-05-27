@@ -1,5 +1,5 @@
-import { BaseRepository } from './base.repository';
-import prisma from '../prisma/client';
+import { BaseRepository } from "./base.repository";
+import prisma from "../prisma/client";
 
 export class UserRepository extends BaseRepository {
   constructor() {

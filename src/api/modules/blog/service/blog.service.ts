@@ -6,7 +6,9 @@ import type { BlogRepositoryContract } from "../interfaces/blog.interface";
 export class BlogService {
   constructor(private readonly repository: BlogRepositoryContract) {}
 
-  paginate(options: QueryOptions) { return this.repository.paginate(options); }
+  paginate(options: QueryOptions) {
+    return this.repository.paginate(options);
+  }
 
   async findById(id: number) {
     const record = await this.repository.findById(id);
@@ -18,13 +20,14 @@ export class BlogService {
     const slug = data.slug || makeSlug(data.title);
     const existing = await this.repository.findBySlug(slug);
     if (existing) throw Object.assign(new Error("Blog slug already exists"), { statusCode: 409 });
-    const publishedAt = data.status === "ACTIVE" ? (data.publishedAt ?? new Date()) : data.publishedAt;
+    const publishedAt =
+      data.status === "ACTIVE" ? (data.publishedAt ?? new Date()) : data.publishedAt;
     return this.repository.create({ ...data, slug, publishedAt });
   }
 
   async update(id: number, data: UpdateBlogDto) {
     await this.findById(id);
-    const slug = data.title ? (data.slug || makeSlug(data.title)) : data.slug;
+    const slug = data.title ? data.slug || makeSlug(data.title) : data.slug;
     return this.repository.update(id, slug ? { ...data, slug } : data);
   }
 
