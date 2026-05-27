@@ -7,8 +7,12 @@ import type { NextRequest } from "next/server";
 export class TestimonialController {
   constructor(private readonly service: TestimonialService) {}
   async list(request: NextRequest) {
-    try { const r = await this.service.paginate(parseQuery(request)); return ok(r.items, "Testimonials fetched", r.meta as never); }
-    catch (e) { return handleError(e); }
+    try {
+      const id = Number(request.nextUrl.searchParams.get("id"));
+      if (id) return ok(await this.service.findById(id), "Testimonial fetched");
+      const r = await this.service.paginate(parseQuery(request));
+      return ok(r.items, "Testimonials fetched", r.meta as never);
+    } catch (e) { return this.handleServiceError(e); }
   }
   async create(request: NextRequest) {
     try {

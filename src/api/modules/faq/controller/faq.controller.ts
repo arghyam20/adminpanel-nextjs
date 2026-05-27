@@ -7,8 +7,12 @@ import type { NextRequest } from "next/server";
 export class FaqController {
   constructor(private readonly service: FaqService) {}
   async list(request: NextRequest) {
-    try { const r = await this.service.paginate(parseQuery(request)); return ok(r.items, "FAQs fetched", r.meta as never); }
-    catch (e) { return handleError(e); }
+    try {
+      const id = Number(request.nextUrl.searchParams.get("id"));
+      if (id) return ok(await this.service.findById(id), "FAQ fetched");
+      const r = await this.service.paginate(parseQuery(request));
+      return ok(r.items, "FAQs fetched", r.meta as never);
+    } catch (e) { return this.handleServiceError(e); }
   }
   async create(request: NextRequest) {
     try {

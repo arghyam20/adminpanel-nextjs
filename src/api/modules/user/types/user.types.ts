@@ -14,4 +14,4 @@ export interface UserRecord {
   role?: { id: number; name: string; slug: string };
 }
 
-export interface SafeUserRecord extends Omit<UserRecord, "password"> {}
+export type SafeUserRecord = UserRecord;

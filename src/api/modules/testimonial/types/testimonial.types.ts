@@ -6,8 +6,8 @@ export interface TestimonialRecord {
   designation: string | null;
   company: string | null;
   content: string;
-  rating: number | null;
-  avatar: string | null;
+  rating: number;
+  image: string | null;
   status: Status;
   isDeleted: boolean;
   createdAt: Date;

@@ -7,7 +7,10 @@ const service = new UserService(repository);
 const controller = new UserController(service);
 
 export const userHandlers = {
-  GET: controller.list.bind(controller),
+  GET: (request: Parameters<UserController["list"]>[0]) =>
+    request.nextUrl.searchParams.get("id")
+      ? controller.show(request)
+      : controller.list(request),
   POST: controller.create.bind(controller),
   PUT: controller.update.bind(controller),
   DELETE: controller.remove.bind(controller),

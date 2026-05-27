@@ -1,2 +1,5 @@
 export { testimonialSchema as BackendSchema } from "@/validations/modules";
-export type { CreateTestimonialDto, UpdateTestimonialDto } from "../dto/testimonial.dto";
+export type {
+  CreateTestimonialDto as TestimonialBackendInput,
+  UpdateTestimonialDto as TestimonialBackendUpdateInput,
+} from "../../dto/testimonial.dto";

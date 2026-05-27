@@ -5,13 +5,13 @@ export interface ServiceRecord {
   title: string;
   slug: string;
   shortDesc: string | null;
-  content: string | null;
-  featuredImage: string | null;
+  description: string;
+  image: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   ordering: number;
   status: Status;
-  categoryId: number | null;
+  categoryId: number;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;

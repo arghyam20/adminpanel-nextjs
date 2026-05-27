@@ -7,7 +7,10 @@ const service = new RoleService(repository);
 const controller = new RoleController(service);
 
 export const roleHandlers = {
-  GET: controller.list.bind(controller),
+  GET: (request: Parameters<RoleController["list"]>[0]) =>
+    request.nextUrl.searchParams.get("id")
+      ? controller.show(request)
+      : controller.list(request),
   POST: controller.create.bind(controller),
   PUT: controller.update.bind(controller),
   DELETE: controller.remove.bind(controller),

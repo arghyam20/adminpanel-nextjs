@@ -7,11 +7,19 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+httpClient.interceptors.request.use((config) => {
+  if (!process.env.NEXT_PUBLIC_API_URL && config.url?.startsWith("/auth/")) {
+    config.url = `/api/v1${config.url}`;
+  }
+
+  return config;
 });
 
 httpClient.interceptors.response.use(

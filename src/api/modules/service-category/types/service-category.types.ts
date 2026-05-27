@@ -5,7 +5,7 @@ export interface ServiceCategoryRecord {
   name: string;
   slug: string;
   description: string | null;
-  featuredImage: string | null;
+  image: string | null;
   status: Status;
   isDeleted: boolean;
   createdAt: Date;

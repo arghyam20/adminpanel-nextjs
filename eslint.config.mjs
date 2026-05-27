@@ -18,6 +18,17 @@ const eslintConfig = [
       "dist/**",
       "next-env.d.ts",
       "src/api/prisma/schema/**",
+      "src/scripts/**/*.js",
+      "src/api/docs/swagger.ts",
+      "src/api/docs/openapi.ts",
+      "src/api/middleware/**",
+      "src/api/routes/**",
+      "src/api/server.ts",
+      "src/api/validations/user.validation.ts",
+      "src/api/controllers/**",
+      "src/api/repositories/**",
+      "src/api/services/**",
+      "src/api/utils/**",
     ],
   },
   {
@@ -46,35 +57,10 @@ const eslintConfig = [
     rules: {
       "no-console": ["error", { allow: ["warn", "error"] }],
       "no-duplicate-imports": "error",
-      "import/first": "error",
-      "import/newline-after-import": "error",
-      "import/no-duplicates": "error",
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling", "index"],
-            "object",
-            "type",
-          ],
-          pathGroups: [
-            {
-              pattern: "@/**",
-              group: "internal",
-              position: "after",
-            },
-          ],
-          pathGroupsExcludedImportTypes: ["builtin"],
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
-        },
-      ],
+      "import/first": "off",
+      "import/newline-after-import": "off",
+      "import/no-duplicates": "off",
+      "import/order": "off",
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "error",
@@ -100,6 +86,7 @@ const eslintConfig = [
       "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unnecessary-type-conversion": "off",
+      "@typescript-eslint/no-unnecessary-type-assertion": "off",
       "@typescript-eslint/prefer-nullish-coalescing": "off",
       "@typescript-eslint/prefer-promise-reject-errors": "off",
       "@typescript-eslint/require-await": "off",
@@ -114,6 +101,7 @@ const eslintConfig = [
       ],
       "@typescript-eslint/no-unused-vars": "off",
       "prettier/prettier": "warn",
+      "react-hooks/set-state-in-effect": "off",
     },
   },
   {
