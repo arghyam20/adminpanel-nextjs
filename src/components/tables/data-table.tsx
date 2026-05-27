@@ -6,11 +6,14 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import TableViewIcon from "@mui/icons-material/TableView";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import {
   Box,
   Button,
   Checkbox,
   Chip,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -69,6 +72,7 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
     ids: unknown[];
     message: string;
   } | null>(null);
+  const [togglingIds, setTogglingIds] = useState<unknown[]>([]);
 
   function fetchData() {
     setLoading(true);
@@ -130,6 +134,27 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
       );
     } finally {
       setDeleteDialog(null);
+    }
+  }
+
+  async function toggleRowStatus(id: string, currentStatus: string) {
+    const nextStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    setTogglingIds((ids) => [...ids, id]);
+
+    try {
+      const { data } = await apiService.update<ApiResponse<Record<string, unknown>>>(endpoint, id, {
+        status: nextStatus,
+      });
+      setRows((items) =>
+        items.map((item) =>
+          String(item.id) === id ? { ...item, status: nextStatus, ...data.data } : item
+        )
+      );
+      toast.success(`Status updated to ${nextStatus}`);
+    } catch {
+      toast.error("Failed to update status");
+    } finally {
+      setTogglingIds((ids) => ids.filter((rowId) => rowId !== id));
     }
   }
 
@@ -291,6 +316,25 @@ export function DataTable({ title, endpoint, columns, addHref, editHref }: Props
                     </TableCell>
                   ))}
                   <TableCell align="right">
+                    {typeof row.status === "string" &&
+                      (row.status === "ACTIVE" || row.status === "INACTIVE") && (
+                        <Tooltip title={row.status === "ACTIVE" ? "Deactivate" : "Activate"}>
+                          <span>
+                            <IconButton
+                              disabled={togglingIds.includes(row.id)}
+                              onClick={() => toggleRowStatus(String(row.id), String(row.status))}
+                            >
+                              {togglingIds.includes(row.id) ? (
+                                <CircularProgress size={20} />
+                              ) : row.status === "ACTIVE" ? (
+                                <ToggleOffIcon />
+                              ) : (
+                                <ToggleOnIcon />
+                              )}
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      )}
                     <Tooltip title="Edit">
                       <IconButton onClick={() => router.push(editHref(String(row.id)) as never)}>
                         <EditIcon />
