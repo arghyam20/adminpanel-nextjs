@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const BackendSchema = z.object({});
-
-export type TestimonialBackendInput = z.infer<typeof BackendSchema>;
+export { testimonialSchema as BackendSchema } from "@/validations/modules";
+export type { CreateTestimonialDto, UpdateTestimonialDto } from "../dto/testimonial.dto";

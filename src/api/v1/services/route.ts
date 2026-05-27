@@ -1,17 +1,24 @@
-import { serviceRepository, withSlug } from "@/repositories/modules";
-import { buildCrudHandlers } from "@/services/crud-service";
-import { serviceSchema } from "@/validations/modules";
+import { requirePermission } from "@/api/middlewares/permission.middleware";
+import { serviceHandlers } from "@/api/modules/service/route/service.route";
+import type { NextRequest } from "next/server";
 
-const handlers = buildCrudHandlers({
-  resource: "services",
-  repository: serviceRepository,
-  schema: serviceSchema,
-  include: { category: true },
-  beforeCreate: (data) => withSlug(data as { title: string; slug?: string }),
-  beforeUpdate: (data) => withSlug(data as { title?: string; slug?: string }),
-});
-
-export const GET = handlers.GET;
-export const POST = handlers.POST;
-export const PUT = handlers.PUT;
-export const DELETE = handlers.DELETE;
+export async function GET(request: NextRequest) {
+  const guard = await requirePermission(request, "services.read");
+  if (guard) return guard;
+  return serviceHandlers.GET(request);
+}
+export async function POST(request: NextRequest) {
+  const guard = await requirePermission(request, "services.create");
+  if (guard) return guard;
+  return serviceHandlers.POST(request);
+}
+export async function PUT(request: NextRequest) {
+  const guard = await requirePermission(request, "services.update");
+  if (guard) return guard;
+  return serviceHandlers.PUT(request);
+}
+export async function DELETE(request: NextRequest) {
+  const guard = await requirePermission(request, "services.delete");
+  if (guard) return guard;
+  return serviceHandlers.DELETE(request);
+}

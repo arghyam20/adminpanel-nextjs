@@ -1,17 +1,24 @@
-import { blogRepository, withSlug } from "@/repositories/modules";
-import { buildCrudHandlers } from "@/services/crud-service";
-import { blogSchema } from "@/validations/modules";
+import { requirePermission } from "@/api/middlewares/permission.middleware";
+import { blogHandlers } from "@/api/modules/blog/route/blog.route";
+import type { NextRequest } from "next/server";
 
-const handlers = buildCrudHandlers({
-  resource: "blogs",
-  repository: blogRepository,
-  schema: blogSchema,
-  include: { category: true, author: true },
-  beforeCreate: (data) => withSlug(data as { title: string; slug?: string }),
-  beforeUpdate: (data) => withSlug(data as { title?: string; slug?: string }),
-});
-
-export const GET = handlers.GET;
-export const POST = handlers.POST;
-export const PUT = handlers.PUT;
-export const DELETE = handlers.DELETE;
+export async function GET(request: NextRequest) {
+  const guard = await requirePermission(request, "blogs.read");
+  if (guard) return guard;
+  return blogHandlers.GET(request);
+}
+export async function POST(request: NextRequest) {
+  const guard = await requirePermission(request, "blogs.create");
+  if (guard) return guard;
+  return blogHandlers.POST(request);
+}
+export async function PUT(request: NextRequest) {
+  const guard = await requirePermission(request, "blogs.update");
+  if (guard) return guard;
+  return blogHandlers.PUT(request);
+}
+export async function DELETE(request: NextRequest) {
+  const guard = await requirePermission(request, "blogs.delete");
+  if (guard) return guard;
+  return blogHandlers.DELETE(request);
+}

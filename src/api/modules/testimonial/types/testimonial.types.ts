@@ -1,7 +1,15 @@
-﻿export interface TestimonialRecord {
+import type { Status } from "@prisma/client";
+
+export interface TestimonialRecord {
   id: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date | null;
-  isDeleted?: boolean;
+  clientName: string;
+  designation: string | null;
+  company: string | null;
+  content: string;
+  rating: number | null;
+  avatar: string | null;
+  status: Status;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const BackendSchema = z.object({});
-
-export type UserBackendInput = z.infer<typeof BackendSchema>;
+export { userSchema as BackendSchema } from "@/validations/modules";
+export type { CreateUserDto, UpdateUserDto } from "../dto/user.dto";

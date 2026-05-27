@@ -1,14 +1,24 @@
-import { testimonialRepository } from "@/repositories/modules";
-import { buildCrudHandlers } from "@/services/crud-service";
-import { testimonialSchema } from "@/validations/modules";
+import { requirePermission } from "@/api/middlewares/permission.middleware";
+import { testimonialHandlers } from "@/api/modules/testimonial/route/testimonial.route";
+import type { NextRequest } from "next/server";
 
-const handlers = buildCrudHandlers({
-  resource: "testimonials",
-  repository: testimonialRepository,
-  schema: testimonialSchema,
-});
-
-export const GET = handlers.GET;
-export const POST = handlers.POST;
-export const PUT = handlers.PUT;
-export const DELETE = handlers.DELETE;
+export async function GET(request: NextRequest) {
+  const guard = await requirePermission(request, "testimonials.read");
+  if (guard) return guard;
+  return testimonialHandlers.GET(request);
+}
+export async function POST(request: NextRequest) {
+  const guard = await requirePermission(request, "testimonials.create");
+  if (guard) return guard;
+  return testimonialHandlers.POST(request);
+}
+export async function PUT(request: NextRequest) {
+  const guard = await requirePermission(request, "testimonials.update");
+  if (guard) return guard;
+  return testimonialHandlers.PUT(request);
+}
+export async function DELETE(request: NextRequest) {
+  const guard = await requirePermission(request, "testimonials.delete");
+  if (guard) return guard;
+  return testimonialHandlers.DELETE(request);
+}

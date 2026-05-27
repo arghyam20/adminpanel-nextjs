@@ -1,39 +1,40 @@
+import { blogSwagger } from "@/api/modules/blog/swagger/blog.swagger";
+import { categorySwagger } from "@/api/modules/category/swagger/category.swagger";
+import { faqSwagger } from "@/api/modules/faq/swagger/faq.swagger";
+import { roleSwagger } from "@/api/modules/role/swagger/role.swagger";
+import { serviceCategorySwagger } from "@/api/modules/service-category/swagger/service-category.swagger";
+import { serviceSwagger } from "@/api/modules/service/swagger/service.swagger";
+import { testimonialSwagger } from "@/api/modules/testimonial/swagger/testimonial.swagger";
+import { userSwagger } from "@/api/modules/user/swagger/user.swagger";
 import { ok } from "@/lib/api-response";
 
-const paths = [
-  "/api/v1/auth/login",
-  "/api/v1/auth/logout",
-  "/api/v1/auth/forgot-password",
-  "/api/v1/auth/reset-password",
-  "/api/v1/roles",
-  "/api/v1/users",
-  "/api/v1/categories",
-  "/api/v1/faqs",
-  "/api/v1/testimonials",
-  "/api/v1/blogs",
-  "/api/v1/service-categories",
-  "/api/v1/services",
+const modules = [
+  roleSwagger,
+  userSwagger,
+  categorySwagger,
+  blogSwagger,
+  faqSwagger,
+  testimonialSwagger,
+  serviceCategorySwagger,
+  serviceSwagger,
 ];
+
+const paths = modules.reduce((acc, mod) => ({ ...acc, ...mod.paths }), {} as Record<string, unknown>);
+const tags = modules.map((mod) => ({ name: mod.tag }));
 
 export async function GET() {
   return ok(
     {
       openapi: "3.1.0",
       info: { title: "Admin Panel API", version: "1.0.0" },
-      paths: Object.fromEntries(
-        paths.map((path) => [
-          path,
-          {
-            get: { summary: `List ${path}`, responses: { "200": { description: "OK" } } },
-            post: { summary: `Create ${path}`, responses: { "201": { description: "Created" } } },
-            put: { summary: `Update ${path}?id=`, responses: { "200": { description: "OK" } } },
-            delete: {
-              summary: `Soft delete ${path}?id=`,
-              responses: { "200": { description: "OK" } },
-            },
-          },
-        ])
-      ),
+      tags,
+      paths,
+      components: {
+        securitySchemes: {
+          cookieAuth: { type: "apiKey", in: "cookie", name: "token" },
+        },
+      },
+      security: [{ cookieAuth: [] }],
     },
     "OpenAPI document"
   );

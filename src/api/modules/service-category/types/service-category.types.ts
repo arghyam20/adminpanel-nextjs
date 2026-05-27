@@ -1,7 +1,13 @@
-﻿export interface ServiceCategoryRecord {
+import type { Status } from "@prisma/client";
+
+export interface ServiceCategoryRecord {
   id: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date | null;
-  isDeleted?: boolean;
+  name: string;
+  slug: string;
+  description: string | null;
+  featuredImage: string | null;
+  status: Status;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

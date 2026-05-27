@@ -1,16 +1,24 @@
-import { serviceCategoryRepository, withSlug } from "@/repositories/modules";
-import { buildCrudHandlers } from "@/services/crud-service";
-import { serviceCategorySchema } from "@/validations/modules";
+import { requirePermission } from "@/api/middlewares/permission.middleware";
+import { serviceCategoryHandlers } from "@/api/modules/service-category/route/service-category.route";
+import type { NextRequest } from "next/server";
 
-const handlers = buildCrudHandlers({
-  resource: "serviceCategories",
-  repository: serviceCategoryRepository,
-  schema: serviceCategorySchema,
-  beforeCreate: (data) => withSlug(data as { name: string; slug?: string }),
-  beforeUpdate: (data) => withSlug(data as { name?: string; slug?: string }),
-});
-
-export const GET = handlers.GET;
-export const POST = handlers.POST;
-export const PUT = handlers.PUT;
-export const DELETE = handlers.DELETE;
+export async function GET(request: NextRequest) {
+  const guard = await requirePermission(request, "service-categories.read");
+  if (guard) return guard;
+  return serviceCategoryHandlers.GET(request);
+}
+export async function POST(request: NextRequest) {
+  const guard = await requirePermission(request, "service-categories.create");
+  if (guard) return guard;
+  return serviceCategoryHandlers.POST(request);
+}
+export async function PUT(request: NextRequest) {
+  const guard = await requirePermission(request, "service-categories.update");
+  if (guard) return guard;
+  return serviceCategoryHandlers.PUT(request);
+}
+export async function DELETE(request: NextRequest) {
+  const guard = await requirePermission(request, "service-categories.delete");
+  if (guard) return guard;
+  return serviceCategoryHandlers.DELETE(request);
+}

@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const FrontendSchema = z.object({});
-
-export type FaqFrontendInput = z.infer<typeof FrontendSchema>;
+export { faqSchema as FrontendSchema } from "@/validations/modules";
+export type { CreateFaqDto as FaqFrontendInput } from "../dto/faq.dto";

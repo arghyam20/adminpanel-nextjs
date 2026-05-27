@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const FrontendSchema = z.object({});
-
-export type CategoryFrontendInput = z.infer<typeof FrontendSchema>;
+export { categorySchema as FrontendSchema } from "@/validations/modules";
+export type { CreateCategoryDto as CategoryFrontendInput } from "../dto/category.dto";

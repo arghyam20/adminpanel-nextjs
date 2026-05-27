@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const FrontendSchema = z.object({});
-
-export type BlogFrontendInput = z.infer<typeof FrontendSchema>;
+export { blogSchema as FrontendSchema } from "@/validations/modules";
+export type { CreateBlogDto as BlogFrontendInput } from "../dto/blog.dto";
