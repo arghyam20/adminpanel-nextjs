@@ -1,13 +1,14 @@
 model Faq {
-  id        Int       @id @default(autoincrement())
-  question  String
-  answer    String    @db.Text
-  ordering  Int       @default(0)
-  status    Status    @default(ACTIVE)
-  deletedAt DateTime?
-  isDeleted Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  question  String   @db.VarChar(500)
+  answer    String   @db.Text
+  ordering  Int      @default(0)
+  status    Status   @default(ACTIVE)
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([ordering, status, isDeleted])
+  @@index([status, isDeleted])
+  @@map("faq")
 }

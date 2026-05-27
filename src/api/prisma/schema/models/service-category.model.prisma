@@ -1,13 +1,17 @@
 model ServiceCategory {
-  id        Int       @id @default(autoincrement())
-  name      String
-  slug      String    @unique
-  status    Status    @default(ACTIVE)
-  deletedAt DateTime?
-  isDeleted Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  services  Service[]
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  slug        String   @unique @db.VarChar(180)
+  description String?  @db.Text
+  image       String?  @db.VarChar(500)
+  status      Status   @default(ACTIVE)
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@index([status, deletedAt])
+  services Service[]
+
+  @@index([status, isDeleted])
+  @@index([slug])
+  @@map("servicecategory")
 }

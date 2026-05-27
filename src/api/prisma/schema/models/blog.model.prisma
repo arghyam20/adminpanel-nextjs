@@ -1,24 +1,27 @@
 model Blog {
   id              Int       @id @default(autoincrement())
-  title           String
-  slug            String    @unique
+  title           String    @db.VarChar(300)
+  slug            String    @unique @db.VarChar(350)
   excerpt         String?   @db.Text
   content         String    @db.LongText
-  featuredImage   String?
-  metaTitle       String?
-  metaDescription String?   @db.Text
-  tags            Json
-  status          Status    @default(DRAFT)
+  featuredImage   String?   @db.VarChar(500)
+  metaTitle       String?   @db.VarChar(160)
+  metaDescription String?   @db.VarChar(320)
+  tags            Json      // stored as LongText in MySQL
+  status          Status    @default(ACTIVE)
   publishedAt     DateTime?
-  deletedAt       DateTime?
-  isDeleted       Boolean   @default(false)
   categoryId      Int
-  category        Category  @relation(fields: [categoryId], references: [id])
   authorId        Int
-  author          User      @relation(fields: [authorId], references: [id])
-  deletedAt       DateTime?
+  isDeleted       Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  @@index([categoryId, authorId, status, isDeleted])
+  category Category @relation(fields: [categoryId], references: [id])
+  author   User     @relation(fields: [authorId], references: [id])
+
+  @@index([categoryId, status, isDeleted])
+  @@index([authorId, status, isDeleted])
+  @@index([slug])
+  @@index([publishedAt, status, isDeleted])
+  @@map("blog")
 }

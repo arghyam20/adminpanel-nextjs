@@ -1,15 +1,17 @@
 model Testimonial {
-  id          Int       @id @default(autoincrement())
-  clientName  String
-  designation String?
-  image       String?
-  rating      Int       @default(5)
-  content     String    @db.Text
-  status      Status    @default(ACTIVE)
-  deletedAt   DateTime?
-  isDeleted   Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id          Int      @id @default(autoincrement())
+  clientName  String   @db.VarChar(150)
+  designation String?  @db.VarChar(150)
+  company     String?  @db.VarChar(150)
+  image       String?  @db.VarChar(500)
+  rating      Int      @default(5) // 1–5
+  content     String   @db.Text
+  status      Status   @default(ACTIVE)
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([status, isDeleted])
+  @@index([rating, status, isDeleted])
+  @@map("testimonial")
 }

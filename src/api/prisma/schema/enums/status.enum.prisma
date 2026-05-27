@@ -1,6 +1,7 @@
+// Shared status enum — maps to MySQL ENUM('Active','Inactive') on every table.
+// The DB has per-table enum types but they all carry the same values,
+// so Prisma maps them all through this single enum.
 enum Status {
-  ACTIVE    @map("Active")
-  INACTIVE  @map("Inactive")
-  DRAFT     @map("Draft")
-  PUBLISHED @map("Published")
+  ACTIVE   @map("Active")
+  INACTIVE @map("Inactive")
 }

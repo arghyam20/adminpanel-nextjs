@@ -68,17 +68,7 @@ async function main() {
     });
   }
 
-  const adminRole = await prisma.role.upsert({
-    where: { slug: "super-admin" },
-    update: { permissions: allPermissions, status: Status.ACTIVE },
-    create: {
-      name: "Super Admin",
-      slug: "super-admin",
-      description: "Full platform access",
-      permissions: allPermissions,
-      status: Status.ACTIVE,
-    },
-  });
+  const adminRole = await prisma.role.findUniqueOrThrow({ where: { slug: "super-admin" } });
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@example.com" },
@@ -101,7 +91,12 @@ async function main() {
   const serviceCategory = await prisma.serviceCategory.upsert({
     where: { slug: "consulting" },
     update: {},
-    create: { name: "Consulting", slug: "consulting", status: Status.ACTIVE },
+    create: {
+      name: "Consulting",
+      slug: "consulting",
+      description: "Strategic consulting services for enterprise clients.",
+      status: Status.ACTIVE,
+    },
   });
 
   await prisma.faq.createMany({
@@ -110,12 +105,27 @@ async function main() {
         question: "How do I secure the admin panel?",
         answer: "Use HTTPS, rotate JWT secrets, enforce roles, and keep dependencies patched.",
         ordering: 1,
+        status: Status.ACTIVE,
       },
       {
         question: "Can I customize permissions?",
-        answer:
-          "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
+        answer: "Yes. Permissions are stored per role as JSON and checked by middleware/API guards.",
         ordering: 2,
+        status: Status.ACTIVE,
+      },
+    ],
+    skipDuplicates: true,
+  });
+
+  await prisma.testimonial.createMany({
+    data: [
+      {
+        clientName: "Jane Smith",
+        designation: "CTO",
+        company: "Acme Corp",
+        rating: 5,
+        content: "Outstanding platform — cut our admin overhead by 60%.",
+        status: Status.ACTIVE,
       },
     ],
     skipDuplicates: true,
@@ -130,7 +140,7 @@ async function main() {
       excerpt: "A seeded article to verify blog workflows.",
       content: "<p>This is the first seeded post.</p>",
       tags: ["admin", "nextjs"],
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
       publishedAt: new Date(),
       categoryId: category.id,
       authorId: admin.id,
@@ -143,8 +153,11 @@ async function main() {
     create: {
       title: "Digital Strategy",
       slug: "digital-strategy",
+      shortDesc: "Plan and execute scalable digital programs.",
       description: "<p>Plan and execute scalable digital programs.</p>",
+      ordering: 1,
       categoryId: serviceCategory.id,
+      status: Status.ACTIVE,
     },
   });
 }

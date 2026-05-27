@@ -55,7 +55,7 @@ export class BaseRepository<TCreate extends object, TUpdate extends object> {
   softDelete(id: number) {
     return this.delegate.update({
       where: { id },
-      data: { isDeleted: true, deletedAt: new Date() },
+      data: { isDeleted: true },
     });
   }
 

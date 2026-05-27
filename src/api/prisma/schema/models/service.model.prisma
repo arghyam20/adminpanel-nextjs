@@ -1,18 +1,23 @@
 model Service {
   id              Int             @id @default(autoincrement())
-  title           String
-  slug            String          @unique
+  title           String          @db.VarChar(300)
+  slug            String          @unique @db.VarChar(350)
+  shortDesc       String?         @db.VarChar(500)
   description     String          @db.LongText
-  image           String?
-  metaTitle       String?
-  metaDescription String?         @db.Text
+  image           String?         @db.VarChar(500)
+  metaTitle       String?         @db.VarChar(160)
+  metaDescription String?         @db.VarChar(320)
+  ordering        Int             @default(0)
   status          Status          @default(ACTIVE)
   categoryId      Int
-  category        ServiceCategory @relation(fields: [categoryId], references: [id])
-  deletedAt       DateTime?
   isDeleted       Boolean         @default(false)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  @@index([categoryId, status, deletedAt])
+  category ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  @@index([categoryId, status, isDeleted])
+  @@index([ordering, status, isDeleted])
+  @@index([slug])
+  @@map("service")
 }

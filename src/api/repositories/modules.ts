@@ -51,7 +51,7 @@ export const userRepository = {
     return prisma.user.update({ where: { id }, data: updateData as never });
   },
   softDelete: (id: number) =>
-    prisma.user.update({ where: { id }, data: { isDeleted: true, deletedAt: new Date() } }),
+    prisma.user.update({ where: { id }, data: { isDeleted: true } }),
 };
 
 export function withSlug<T extends { name?: string; title?: string; slug?: string }>(data: T) {

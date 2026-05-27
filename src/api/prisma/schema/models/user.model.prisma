@@ -1,20 +1,23 @@
 model User {
   id                  Int       @id @default(autoincrement())
-  name                String
-  email               String    @unique
-  password            String
-  phone               String?
-  profileImage        String?
+  name                String    @db.VarChar(150)
+  email               String    @unique @db.VarChar(200)
+  password            String    @db.VarChar(255)
+  phone               String?   @db.VarChar(20)
+  profileImage        String?   @db.VarChar(500)
   status              Status    @default(ACTIVE)
   roleId              Int
-  role                Role      @relation(fields: [roleId], references: [id])
   passwordResetToken  String?   @db.VarChar(255)
   passwordResetExpiry DateTime?
-  deletedAt           DateTime?
   isDeleted           Boolean   @default(false)
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
-  blogs               Blog[]
+
+  role  Role   @relation(fields: [roleId], references: [id])
+  blogs Blog[]
 
   @@index([roleId, status, isDeleted])
+  @@index([email])
+  @@index([passwordResetToken])
+  @@map("user")
 }
