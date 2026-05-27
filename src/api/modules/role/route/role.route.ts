@@ -1,10 +1,14 @@
-﻿import { ROLES_RESOURCE } from "../constants/role.constants";
+import { RoleController } from "../controller/role.controller";
+import { RoleRepository } from "../repository/role.repository";
+import { RoleService } from "../service/role.service";
 
-import type { RoleController } from "../controller/role.controller";
+const repository = new RoleRepository();
+const service = new RoleService(repository);
+const controller = new RoleController(service);
 
-export function createRoleRoutes(controller: RoleController) {
-  return {
-    resource: ROLES_RESOURCE,
-    controller,
-  };
-}
+export const roleHandlers = {
+  GET: controller.list.bind(controller),
+  POST: controller.create.bind(controller),
+  PUT: controller.update.bind(controller),
+  DELETE: controller.remove.bind(controller),
+};

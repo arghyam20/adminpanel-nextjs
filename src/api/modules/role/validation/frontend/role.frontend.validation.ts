@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const FrontendSchema = z.object({});
-
-export type RoleFrontendInput = z.infer<typeof FrontendSchema>;
+export { roleSchema as FrontendSchema } from "@/validations/modules";
+export type { CreateRoleDto as RoleFrontendInput } from "../dto/role.dto";

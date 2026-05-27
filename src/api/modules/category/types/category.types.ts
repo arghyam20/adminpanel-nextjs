@@ -1,7 +1,5 @@
-﻿export interface CategoryRecord {
-  id: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date | null;
-  isDeleted?: boolean;
+import type { Status } from "@prisma/client";
+export interface CategoryRecord {
+  id: number; name: string; slug: string; status: Status;
+  isDeleted: boolean; createdAt: Date; updatedAt: Date;
 }

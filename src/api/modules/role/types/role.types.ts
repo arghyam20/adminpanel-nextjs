@@ -1,7 +1,13 @@
-﻿export interface RoleRecord {
+import type { Status } from "@prisma/client";
+
+export interface RoleRecord {
   id: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date | null;
-  isDeleted?: boolean;
+  name: string;
+  slug: string;
+  description: string | null;
+  permissions: Record<string, string[]>;
+  status: Status;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

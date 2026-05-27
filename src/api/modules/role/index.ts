@@ -1,4 +1,4 @@
-﻿export * from "./constants/role.constants";
+export * from "./constants/role.constants";
 export * from "./controller/role.controller";
 export * from "./dto/role.dto";
 export * from "./interfaces/role.interface";
@@ -7,5 +7,3 @@ export * from "./route/role.route";
 export * from "./service/role.service";
 export * from "./swagger/role.swagger";
 export * from "./types/role.types";
-export * from "./validation/backend/role.backend.validation";
-export * from "./validation/frontend/role.frontend.validation";

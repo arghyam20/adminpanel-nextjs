@@ -1,5 +1,2 @@
-﻿import { z } from "zod";
-
-export const BackendSchema = z.object({});
-
-export type RoleBackendInput = z.infer<typeof BackendSchema>;
+export { roleSchema as BackendSchema } from "@/validations/modules";
+export type { CreateRoleDto, UpdateRoleDto } from "../dto/role.dto";
